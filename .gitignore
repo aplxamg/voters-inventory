@@ -1,5 +1,42 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> ae04660ad4a2c541a2db5fe4aa5e40f44e2efe67
 # https://git-scm.com/docs/gitignore
 # https://help.github.com/articles/ignoring-files
 # Example .gitignore files: https://github.com/github/gitignore
 /bower_components/
+<<<<<<< HEAD
 /node_modules/
+=======
+/node_modules/
+=======
+# phpstorm project files
+.idea
+
+# netbeans project files
+nbproject
+
+# zend studio for eclipse project files
+.buildpath
+.project
+.settings
+
+# windows thumbnail cache
+Thumbs.db
+
+# composer vendor dir
+/vendor
+
+# composer itself is not needed
+composer.phar
+
+# Mac DS_Store Files
+.DS_Store
+
+# phpunit itself is not needed
+phpunit.phar
+# local phpunit config
+/phpunit.xml
+>>>>>>> origin/master
+>>>>>>> ae04660ad4a2c541a2db5fe4aa5e40f44e2efe67
