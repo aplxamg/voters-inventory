@@ -2,73 +2,98 @@
 
 namespace app\models;
 
-class User extends \yii\base\Object implements \yii\web\IdentityInterface
+use Yii;
+use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
+
+/**
+ * This is the model class for table "user".
+ *
+ * @property integer $id
+ * @property string $user_type
+ * @property string $username
+ * @property string $password
+ * @property string $email_address
+ * @property string $status
+ * @property string $ins_time
+ * @property string $up_time
+ *
+ * @property UserInfo[] $userInfos
+ */
+class User extends ActiveRecord implements IdentityInterface
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'user';
+    }
 
     /**
      * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['id', 'user_type', 'username', 'password', 'email_address', 'status', 'ins_time', 'up_time'], 'required'],
+            [['id'], 'integer'],
+            [['user_type', 'status'], 'string'],
+            [['ins_time', 'up_time'], 'safe'],
+            [['username'], 'string', 'max' => 10],
+            [['password', 'email_address'], 'string', 'max' => 100],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'user_type' => 'User Type',
+            'username' => 'Username',
+            'password' => 'Password',
+            'email_address' => 'Email Address',
+            'status' => 'Status',
+            'ins_time' => 'Ins Time',
+            'up_time' => 'Up Time',
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserInfos()
+    {
+        return $this->hasMany(UserInfo::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * Finds an identity by the given ID.
+     *
+     * @param string|integer $id the ID to be looked for
+     * @return IdentityInterface|null the identity object that matches the given ID.
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return static::findOne($id);
     }
-
+    /******************************** Identity Interface ********************************/
     /**
-     * @inheritdoc
+     * Finds an identity by the given token.
+     *
+     * @param string $token the token to be looked for
+     * @return IdentityInterface|null the identity object that matches the given token.
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return static::findOne(['access_token' => $token]);
     }
 
     /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @inheritdoc
+     * @return int|string current user ID
      */
     public function getId()
     {
@@ -76,29 +101,44 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * @return string current user auth key
      */
     public function getAuthKey()
     {
-        return $this->authKey;
+        return $this->auth_key;
     }
 
     /**
-     * @inheritdoc
+     * @param string $authKey
+     * @return boolean if auth key is valid for current user
      */
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
+        return $this->getAuthKey() === $authKey;
+    }
+
+    /******************************** Custom Functions ********************************/
+
+    /**
+        @author Anecita M. Gabisan
+        @created 2016-06-18
+        findByUsername()
+        @param  [string]    [username]
+    **/
+    public static function findByUsername($username)
+    {
+        return static::findOne(['username' => $username]);
     }
 
     /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return boolean if password provided is valid for current user
-     */
-    public function validatePassword($password)
+        @author Anecita M. Gabisan
+        @created 2016-06-18
+        validatePassword()
+        @param  [string]    [password] - password inputted by the user
+        @param  [string]    [hash_password] - hash password fetch from the database
+    **/
+    public static function validatePassword($password, $hash_password)
     {
-        return $this->password === $password;
+        return Yii::$app->getSecurity()->validatePassword($password, $hash_password);
     }
 }

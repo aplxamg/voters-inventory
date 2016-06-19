@@ -1,0 +1,55 @@
+* {
+  margin: 0;
+}
+html, body {
+  height: 100%;
+}
+.common-wrapper {
+  min-height: 100%;
+  /* equal to footer height */
+  margin-bottom: -50px;
+}
+
+#forLogin {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.common-wrapper:after {
+  content: "";
+  display: block;
+}
+.common-footer, .common-wrapper:after {
+  height: 50px;
+}
+.common-footer {
+/*  background: #C0BFBC;*/
+  color: #2592D0;
+}
+
+.common-footer #footer {
+    line-height: 50px;
+}
+
+/** Login Page **/
+#login-wrapper {
+    margin: -50px auto 0;
+    min-height: 80px;
+/*    background: blue;*/
+    width: 300px;
+}
+
+.common-wrapper #logo {
+    margin: 0 auto;
+    width: 280px;
+}
+
+.common-wrapper #logo > img {
+    width: 280px;
+}
+
+#login-wrapper #content {
+    min-height: 100px;
+    margin-top: 10px;
+}

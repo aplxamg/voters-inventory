@@ -1,11 +1,35 @@
 <?php
 
 $params = require(__DIR__ . '/params.php');
+$route  = require(__DIR__ . '/route.php');
+
+// Database Configuration
+$databases = [
+    'db'  => '_commondb',
+];
+
+$dbConfig = [
+    'class' => 'yii\db\Connection',
+    'dsn' => '',
+    'username' => 'root',
+    'password' => 'dimensions',
+    'charset' => 'utf8',
+    'enableSchemaCache' => true,
+    'schemaCacheDuration' => 3600,
+    'schemaCache' => 'cache',
+];
+
+foreach ($databases as $dbKey => $dbName) {
+    $dsn = 'mysql:host=localhost;dbname=' . $dbName;
+    $dbConfig['dsn'] = $dsn;
+    $$dbKey = $dbConfig;
+}
 
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'timeZone' => 'Asia/Manila',
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -20,6 +44,11 @@ $config = [
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
+        ],
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'dateFormat' => 'Y/MM/dd',
+            'datetimeFormat' => 'Y/MM/dd H:i:s',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
@@ -37,15 +66,16 @@ $config = [
                 ],
             ],
         ],
-        'db' => require(__DIR__ . '/db.php'),
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
+        'urlManager' => $route, // Routing
+        // Database Configuration
+        'db'         => $db, // Default
+
+    ],
+     // Modules
+    'modules' => [
+        'account' => [
+            'class' => 'app\modules\account\Module',
         ],
-        */
     ],
     'params' => $params,
 ];
@@ -60,7 +90,9 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
+        'allowedIPs' => ['*'] // adjust this to your needs
     ];
+
 }
 
 return $config;
