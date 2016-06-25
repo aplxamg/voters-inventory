@@ -32,6 +32,24 @@ html, body {
     line-height: 50px;
 }
 
+.common-container {
+    padding: 0px 25px !important;
+}
+
+/** Navigation **/
+
+#commonLayout .navbar-brand {
+    height: 85px;
+}
+
+#commonLayout #w0 {
+    height: 85px;
+}
+
+#commonLayout #w0 > li {
+    top: 25%;
+}
+
 /** Login Page **/
 #login-wrapper {
     margin: -50px auto 0;

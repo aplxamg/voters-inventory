@@ -19,11 +19,13 @@ class CommonAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/common/common.css',
+        'css/common/bootstrap.css',
     ];
     public $js = [
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset'
     ];
 }
