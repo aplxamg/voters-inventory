@@ -36,7 +36,30 @@ html, body {
     padding: 0px 25px !important;
 }
 
+.line {
+	border-bottom: 1px solid #b1b1b1;
+	width: 100%;
+	float: left;
+	height: 1px;
+	display: inline-block;
+	margin: -28px 0 0 0;
+}
+
+h1.title, h2.title, h3.title, h4.title, h5.title, h6.title {
+	color: #939292;
+	background-color: #fff;
+
+	padding-right: 10px;
+	z-index: 5;
+	position: relative;
+	float: left;
+}
+
 /** Navigation **/
+#commonLayout {
+    height: 85px;
+    background: white;
+}
 
 #commonLayout .navbar-brand {
     height: 85px;
@@ -48,6 +71,16 @@ html, body {
 
 #commonLayout #w0 > li {
     top: 25%;
+}
+
+.navbar-default .navbar-brand img {
+    width: 250px;
+}
+
+@media (max-width: 479px) {
+    .navbar-default .navbar-brand img {
+        width: 220px;
+    }
 }
 
 /** Login Page **/
@@ -70,3 +103,7 @@ html, body {
     min-height: 100px;
     margin-top: 10px;
 }
+
+
+
+

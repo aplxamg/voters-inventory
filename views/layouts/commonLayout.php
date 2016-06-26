@@ -31,7 +31,7 @@ $identity = User::initUser();
 <?php $this->beginBody() ?>
     <div class="common-wrapper">
         <header id="commonLayout">
-            <nav class="navbar">
+            <nav class="navbar navbar-default navbar-fixed-top">
               <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -42,7 +42,7 @@ $identity = User::initUser();
                     <span class="icon-bar"></span>
                   </button>
                   <a class="navbar-brand" href="#">
-                    <img alt="DashCodes" src='/resources/common/logo.png' style='width: 250px;'>
+                    <img alt="DashCodes" src='/resources/common/logo.png'>
                   </a>
                 </div>
 
