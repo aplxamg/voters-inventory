@@ -20,7 +20,7 @@ class SessionController extends \yii\web\Controller
             'access' => [
                 'class' => AccessControl::className(),
                 // Pages that are included in the rule set
-                'only'  => ['index', 'login', 'logout'],
+                'only'  => ['index', 'login', 'logout', 'dashboard'],
                 'rules' => [
                     [ // Pages that can be accessed without logging in
                         'allow'     => true,
@@ -29,7 +29,7 @@ class SessionController extends \yii\web\Controller
                     ],
                     [ // Pages that can be accessed when logged in
                         'allow'     => true,
-                        'actions'   => ['logout'],
+                        'actions'   => ['logout', 'dashboard'],
                         'roles'     => ['@']
                     ]
                 ],

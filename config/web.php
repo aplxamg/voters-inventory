@@ -5,7 +5,8 @@ $route  = require(__DIR__ . '/route.php');
 
 // Database Configuration
 $databases = [
-    'db'  => '_commondb',
+    'db'        => '_commondb',
+    'votersdb'  => '_votersdb'
 ];
 
 $dbConfig = [
@@ -69,12 +70,16 @@ $config = [
         'urlManager' => $route, // Routing
         // Database Configuration
         'db'         => $db, // Default
+        'votersdb'   => $votersdb
 
     ],
      // Modules
     'modules' => [
         'account' => [
             'class' => 'app\modules\account\Module',
+        ],
+        'votersmgmt' => [
+            'class' => 'app\modules\votersmgmt\Module',
         ],
     ],
     'params' => $params,

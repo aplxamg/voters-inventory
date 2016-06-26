@@ -10,7 +10,11 @@ return [
         ''
         => '/account/session/login',
         '/<action:(login|logout|dashboard)>'
-        => '/account/session/<action>'
+        => '/account/session/<action>',
+        // Voters Management
+        '/<module:votersmgmt>/<controller:manage>/list'
+        => '/<module>/<controller>/index'
+
     ]
 ];
 ?>
