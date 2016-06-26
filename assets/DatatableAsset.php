@@ -22,6 +22,12 @@ class DatatableAsset extends AssetBundle
     ];
     public $js = [
         'plugin/Datatable/media/js/jquery.dataTables.min.js',
-        'plugin/dataTables.bootstrap.js'
+        'plugin/Datatable/media/js/dataTables.bootstrap.js',
+        'js/common/datatables.js'
+    ];
+    public $depends = [
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset'
     ];
 }

@@ -5,6 +5,8 @@ namespace app\modules\votersmgmt\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use app\components\helpers\Data;
+use app\models\VotersdbVoters;
 
 class ManageController extends \yii\web\Controller
 {
@@ -58,7 +60,12 @@ class ManageController extends \yii\web\Controller
 
     public function actionIndex()
     {
-        return $this->render('list');
+        $votersModel = new VotersdbVoters;
+        $params = ['status' => 'active'];
+        $records = Data::findRecords($votersModel, null, $params, 'all');;
+        return $this->render('list', [
+            'records'       => $records
+        ]);
     }
 
 
