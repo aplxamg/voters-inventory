@@ -13,7 +13,11 @@ return [
         => '/account/session/<action>',
         // Voters Management
         '/<module:votersmgmt>/<controller:manage>/list'
-        => '/<module>/<controller>/index'
+        => '/<module>/<controller>/index',
+
+        // Leaders Management
+        '/<module:leadersmgmt>/<controller:manage>/list'
+        => '/<module>/<controller>/index',
 
     ]
 ];
