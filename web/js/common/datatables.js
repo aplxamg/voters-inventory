@@ -12,7 +12,9 @@ $(window).load(function(){
     if($('#leaders_list').length != 0) {
         $('#leaders_list').DataTable({
             "aoColumnDefs": [
-                { "bSortable": false, "aTargets": [3] }
+                { "bSortable": false, "aTargets": [3] },
+                { "sWidth": "20%", "aTargets": [0,3] },
+                { "sWidth": "10%", "aTargets": [2] },
             ],
             "order": [[ 0, "desc" ]],
         });
