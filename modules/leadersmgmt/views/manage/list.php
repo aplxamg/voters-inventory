@@ -25,9 +25,9 @@ $this->title = 'Leaders Management List';
                     <td class="text-center">
                         <ul class="list-inline">
                             <li>
-                                <a href="/votersmgmt/manage/edit/".<?= $rec['id']; ?>
-                                    <button type="button" class="btn btn-primary" aria-label="Pencil">
-                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                <a href="/votersmgmt/manage/viewmembers/".<?= $rec['id']; ?>
+                                    <button type="button" class="btn btn-primary" aria-label="list">
+                                        <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
                                 </button></a>
                             </li>
                             <li>
