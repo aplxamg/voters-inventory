@@ -115,8 +115,21 @@ h1.title, h2.title, h3.title, h4.title, h5.title, h6.title {
     width: 100%;
 }
 
+/** Forms **/
 .text-wrap {
     word-wrap: break-word;
 }
 
+.custom-wrapper1 {
+    width: 75%;
+}
+
+.custom-wrapper2 {
+    width: 50%;
+}
+
+.hint {
+    color: #858C8C;
+    font-size: smaller;
+}
 

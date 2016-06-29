@@ -85,4 +85,22 @@ class VotersdbVoters extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Members::className(), ['member_id' => 'id']);
     }
+
+    /*
+    *   @author Anecita M. Gabisan
+    *   @date   2016-06-28
+    *   saveVoter
+    *   saves / updates voter's information
+    *   @params:
+    *       [model]     [model]     new model
+    *       [int]       [id]        id of voter (use for update voter)
+    *       [array]     [values]    values from form
+    */
+    public function saveVoter($model, $id, $values)
+    {
+        $model->attributes = $values;
+        $model->status = 'active';
+
+        return $model->save();
+    }
 }
