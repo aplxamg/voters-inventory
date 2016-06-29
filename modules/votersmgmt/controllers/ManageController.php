@@ -62,7 +62,7 @@ class ManageController extends \yii\web\Controller
     {
         $votersModel = new VotersdbVoters;
         $params = ['status' => 'active'];
-        $records = Data::findRecords($votersModel, null, $params, 'all');;
+        $records = Data::findRecords($votersModel, null, $params, 'all');
         return $this->render('list', [
             'records'       => $records
         ]);
