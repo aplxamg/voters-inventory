@@ -109,5 +109,14 @@ h1.title, h2.title, h3.title, h4.title, h5.title, h6.title {
     margin-top: 80px;
 }
 
+/** Datatables **/
+.myTable {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.text-wrap {
+    word-wrap: break-word;
+}
 
 
