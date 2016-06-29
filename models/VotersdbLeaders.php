@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "leaders".
@@ -74,5 +75,16 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
     public function getMembers()
     {
         return $this->hasMany(Members::className(), ['leader_id' => 'id']);
+    }
+
+    public function getLeadersList(){
+        $query = new Query();
+        $query->select('v.id, v.voters_no, v.first_name, v.middle_name, v.last_name, l.assigned_precinct')
+              ->from('_votersdb.voters as v')
+              ->innerJoin('_votersdb.leaders as l', 'v.id = l.voter_id and l.`status` = "active"')
+              ->where('v.status = "active"');
+        $command = $query->createCommand(Yii::$app->votersdb);
+        $rows = $command->queryAll();
+        return $rows;
     }
 }

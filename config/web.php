@@ -81,6 +81,9 @@ $config = [
         'votersmgmt' => [
             'class' => 'app\modules\votersmgmt\Module',
         ],
+        'leadersmgmt' => [
+            'class' => 'app\modules\leadersmgmt\Module',
+        ],
     ],
     'params' => $params,
 ];
