@@ -44,7 +44,7 @@ class VotersdbVoters extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['voters_no', 'first_name', 'last_name', 'birthdate', 'address', 'precinct_no'], 'required'],
+            [['voters_no', 'first_name', 'last_name', 'birthdate', 'precinct_no'], 'required'],
             [['address', 'status'], 'string'],
             [['voters_no'], 'string', 'max' => 30],
             [['first_name', 'middle_name', 'last_name'], 'string', 'max' => 50],
@@ -59,13 +59,13 @@ class VotersdbVoters extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'voters_no' => 'Voters No',
+            'voters_no' => 'Voters Number',
             'first_name' => 'First Name',
             'middle_name' => 'Middle Name',
             'last_name' => 'Last Name',
             'birthdate' => 'Birthdate',
             'address' => 'Address',
-            'precinct_no' => 'Precinct No',
+            'precinct_no' => 'Precinct Number',
             'status' => 'Status',
         ];
     }
@@ -98,8 +98,14 @@ class VotersdbVoters extends \yii\db\ActiveRecord
     */
     public function saveVoter($model, $id, $values)
     {
-        $model->attributes = $values;
-        $model->status = 'active';
+        $model->voters_no       = strtoupper(trim($values['voters_no']));
+        $model->first_name      = strtoupper(trim($values['first_name']));
+        $model->middle_name     = strtoupper(trim($values['middle_name']));
+        $model->last_name       = strtoupper(trim($values['last_name']));
+        $model->birthdate       = strtoupper(trim($values['birthdate']));
+        $model->address         = strtoupper(trim($values['address']));
+        $model->precinct_no     = strtoupper(trim($values['precinct_no']));
+        $model->status          = 'active';
 
         return $model->save();
     }

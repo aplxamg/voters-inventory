@@ -44,7 +44,7 @@ $config = [
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => '/dashboard',
         ],
         'formatter' => [
             'class' => 'yii\i18n\Formatter',
