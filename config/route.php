@@ -13,8 +13,9 @@ return [
         => '/account/session/<action>',
         // Voters Management
         '/<module:votersmgmt>/<controller:manage>/list'
-        => '/<module>/<controller>/index'
-
+        => '/<module>/<controller>/index',
+        '/<module:votersmgmt>/<controller:manage>/<action:(view|edit)>/<id:\d+>'
+        => '/<module>/<controller>/<action>'
     ]
 ];
 ?>

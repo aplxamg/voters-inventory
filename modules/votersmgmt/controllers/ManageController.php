@@ -68,6 +68,19 @@ class ManageController extends \yii\web\Controller
         ]);
     }
 
+    public function actionView($id) {
+        $votersModel = new VotersdbVoters;
+        $params = ['id' => $id];
+        $voter = Data::findRecords($votersModel, null, $params, 'one');
+         return $this->render('view', ['voter' => $voter]);
+    }
+
+    public function actionEdit($id) {
+        $votersModel = new VotersdbVoters;
+        $params = ['id' => $id];
+        $voter = Data::findRecords($votersModel, null, $params, 'one');
+         return $this->render('edit', ['voter' => $voter]);
+    }
 
 }
 
