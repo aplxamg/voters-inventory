@@ -25,15 +25,16 @@ $this->title = 'Leaders Management List';
                     <td class="text-center">
                         <ul class="list-inline">
                             <li>
-                                <a href="/votersmgmt/manage/viewmembers/".<?= $rec['id']; ?>
+                                <a href="/leadersmgmt/manage/viewmembers/".<?= $rec['id']; ?>>
                                     <button type="button" class="btn btn-primary" aria-label="list">
                                         <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
                                 </button></a>
                             </li>
                             <li>
-                                <button type="button" class="btn btn-danger" aria-label="Trash">
+                                <a href="/leadersmgmt/manage/delete/<?php echo $rec['id'] ?>">
+                                    <button type="button" class="btn btn-danger" aria-label="Trash">
                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </button>
+                                    </button></a>
                             </li>
                         </ul>
                     </td>

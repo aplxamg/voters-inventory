@@ -68,6 +68,11 @@ class ManageController extends \yii\web\Controller
         ]);
     }
 
+    public function actionDelete($id)
+    {
+        var_dump($id);
+    }
+
 
 }
 
