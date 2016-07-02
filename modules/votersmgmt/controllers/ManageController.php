@@ -68,6 +68,30 @@ class ManageController extends \yii\web\Controller
         ]);
     }
 
+    public function actionAdd()
+    {
+        $votersModel = new VotersdbVoters;
+        $errorMsg   = 0;
+        if(Yii::$app->request->isPost) {
+            if(Yii::$app->request->post('save')) {
+                $event = 'list';
+            } else {
+                $event = 'create';
+            }
+
+            $values = Yii::$app->request->post('VotersdbVoters');
+            if($votersModel->saveVoter($votersModel, null, $values)) {
+                return $this->redirect('/votersmgmt/manage/'.$event);
+            } else {
+                $errorMsg = 1;
+            }
+        }
+
+        return $this->render('create', [
+            'model' => $votersModel,
+            'error' => $errorMsg
+        ]);
+    }
 
 }
 
