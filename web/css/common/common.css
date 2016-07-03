@@ -133,3 +133,11 @@ h1.title, h2.title, h3.title, h4.title, h5.title, h6.title {
     font-size: smaller;
 }
 
+.toUpper {
+    text-transform:uppercase;
+}
+
+.toLower {
+    text-transform:lowercase;
+}
+

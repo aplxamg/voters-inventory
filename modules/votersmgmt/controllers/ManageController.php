@@ -68,25 +68,40 @@ class ManageController extends \yii\web\Controller
         ]);
     }
 
+    /**     @author     Anecita M Gabisan
+    **      @created    2016-07-02
+    **
+    **      errorMsg
+    **          0   = No error
+    **          1   = Error on saving record
+    **          2   = Record already exists
+    **/
     public function actionAdd()
     {
         $votersModel = new VotersdbVoters;
         $errorMsg   = 0;
         if(Yii::$app->request->isPost) {
-            if(Yii::$app->request->post('save')) {
+            if(Yii::$app->request->post('save') === 'Save') {
                 $event = 'list';
             } else {
-                $event = 'create';
+                $event = 'add';
             }
-
             $values = Yii::$app->request->post('VotersdbVoters');
-            if($votersModel->saveVoter($votersModel, null, $values)) {
-                return $this->redirect('/votersmgmt/manage/'.$event);
+            $params = [ 'status'        => 'active',
+                        'first_name'    => strtoupper(trim($values['first_name'])),
+                        'last_name'     => strtoupper(trim($values['last_name']))
+                      ];
+            $record = Data::findRecords($votersModel, null, $params);
+            if(count($record) == 0) {
+                if($votersModel->saveVoter($votersModel, null, $values)) {
+                    return $this->redirect('/votersmgmt/manage/'.$event);
+                } else {
+                    $errorMsg = 1;
+                }
             } else {
-                $errorMsg = 1;
+                $errorMsg = 2;
             }
         }
-
         return $this->render('create', [
             'model' => $votersModel,
             'error' => $errorMsg
