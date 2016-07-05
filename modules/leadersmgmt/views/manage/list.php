@@ -6,6 +6,12 @@ $this->title = 'Leaders Management List';
 
 <h2 class="title"><?php echo $this->title; ?></h2><span class="line"></span>
 <div class="content">
+<?php if (Yii::$app->session->hasFlash('success')): ?>
+  <div class="alert alert-success alert-dismissable">
+  <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+  <?= Yii::$app->session->getFlash('success') ?>
+  </div>
+<?php endif; ?>
     <div class="text-center">
         <a href="/leadersmgmt/manage/create"><button type="button" class="btn btn-primary btn-lg">Add Leader</button></a>
     </div>
