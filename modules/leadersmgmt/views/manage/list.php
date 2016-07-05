@@ -32,8 +32,14 @@ $this->title = 'Leaders Management List';
                         <ul class="list-inline">
                             <li>
                                 <a href="/leadersmgmt/manage/viewmembers/".<?= $rec['id']; ?>>
-                                    <button type="button" class="btn btn-primary" aria-label="list">
+                                    <button type="button" class="btn btn-success" aria-label="list">
                                         <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                                </button></a>
+                            </li>
+                            <li>
+                                <a href="/leadersmgmt/manage/edit/<?php echo $rec['id']; ?>">
+                                    <button type="button" class="btn btn-primary" aria-label="Pencil">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                 </button></a>
                             </li>
                             <li>
