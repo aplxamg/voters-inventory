@@ -137,8 +137,6 @@ class ManageController extends \yii\web\Controller
             'error' => $errorMsg
         ]);
     }
-<<<<<<< HEAD
-=======
 
     public function actionDelete($id)
     {
@@ -173,7 +171,6 @@ class ManageController extends \yii\web\Controller
         }
     }
 
->>>>>>> origin/develop
 }
 
 
