@@ -44,7 +44,7 @@ $config = [
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => '/dashboard',
         ],
         'formatter' => [
             'class' => 'yii\i18n\Formatter',
@@ -80,6 +80,9 @@ $config = [
         ],
         'votersmgmt' => [
             'class' => 'app\modules\votersmgmt\Module',
+        ],
+        'leadersmgmt' => [
+            'class' => 'app\modules\leadersmgmt\Module',
         ],
     ],
     'params' => $params,

@@ -15,7 +15,12 @@ return [
         '/<module:votersmgmt>/<controller:manage>/list'
         => '/<module>/<controller>/index',
         '/<module:votersmgmt>/<controller:manage>/<action:(view|edit)>/<id:\d+>'
-        => '/<module>/<controller>/<action>'
+        => '/<module>/<controller>/<action>',
+        '/<module:votersmgmt>/<controller:manage>/<action:add>'
+        => '/<module>/<controller>/<action>',
+        // Leaders Management
+        '/<module:leadersmgmt>/<controller:manage>/list'
+        => '/<module>/<controller>/index',
     ]
 ];
 ?>

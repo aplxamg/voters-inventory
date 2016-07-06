@@ -7,7 +7,7 @@ $this->title = 'Voters Management List';
 <h2 class="title"><?php echo $this->title; ?></h2><span class="line"></span>
 <div class="content">
     <div class="text-center">
-        <a href="/votersmgmt/manage/create"><button type="button" class="btn btn-primary btn-lg">Add Voter</button></a>
+        <a href="/votersmgmt/manage/add"><button type="button" class="btn btn-primary btn-lg">Add Voter</button></a>
     </div>
     <br>
     <table id="voters_list" class="table table-striped table-bordered dataTable display myTable">

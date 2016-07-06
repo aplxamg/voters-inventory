@@ -69,6 +69,12 @@ class ManageController extends \yii\web\Controller
     }
 
     public function actionView($id) {
+
+        if(Yii::$app->request->isPost) {
+            if(Yii::$app->request->post('view') === 'Back') {
+                return $this->redirect('/votersmgmt/manage/list');
+            }
+        }
         $votersModel = new VotersdbVoters;
         $params = ['id' => $id];
         $voter = Data::findRecords($votersModel, null, $params, 'one');
@@ -76,12 +82,59 @@ class ManageController extends \yii\web\Controller
     }
 
     public function actionEdit($id) {
+
         $votersModel = new VotersdbVoters;
+
+        if(Yii::$app->request->isPost) {
+
+            $values = Yii::$app->request->post('VotersdbVoters');
+            $votersModel->saveVoter($votersModel,$id,$values);
+            return $this->redirect('/votersmgmt/manage/list');
+        }
+
         $params = ['id' => $id];
         $voter = Data::findRecords($votersModel, null, $params, 'one');
-         return $this->render('edit', ['voter' => $voter]);
+        return $this->render('edit', ['voter' => $voter]);
     }
-
+    /**     @author     Anecita M Gabisan
+    **      @created    2016-07-02
+    **
+    **      errorMsg
+    **          0   = No error
+    **          1   = Error on saving record
+    **          2   = Record already exists
+    **/
+    public function actionAdd()
+    {
+        $votersModel = new VotersdbVoters;
+        $errorMsg   = 0;
+        if(Yii::$app->request->isPost) {
+            if(Yii::$app->request->post('save') === 'Save') {
+                $event = 'list';
+            } else {
+                $event = 'add';
+            }
+            $values = Yii::$app->request->post('VotersdbVoters');
+            $params = [ 'status'        => 'active',
+                        'first_name'    => strtoupper(trim($values['first_name'])),
+                        'last_name'     => strtoupper(trim($values['last_name']))
+                      ];
+            $record = Data::findRecords($votersModel, null, $params);
+            if(count($record) == 0) {
+                if($votersModel->saveVoter($votersModel, null, $values)) {
+                    return $this->redirect('/votersmgmt/manage/'.$event);
+                } else {
+                    $errorMsg = 1;
+                }
+            } else {
+                $errorMsg = 2;
+            }
+        }
+        return $this->render('create', [
+            'model' => $votersModel,
+            'error' => $errorMsg
+        ]);
+    }
 }
 
 
