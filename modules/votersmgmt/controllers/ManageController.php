@@ -7,6 +7,8 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use app\components\helpers\Data;
 use app\models\VotersdbVoters;
+use app\models\VotersdbLeaders;
+use app\models\VotersdbMembers;
 
 class ManageController extends \yii\web\Controller
 {
@@ -135,6 +137,43 @@ class ManageController extends \yii\web\Controller
             'error' => $errorMsg
         ]);
     }
+<<<<<<< HEAD
+=======
+
+    public function actionDelete($id)
+    {
+        $votersModel = new VotersdbVoters;
+        $params = ['id' => intval($id), 'status' => 'active'];
+        $voters = Data::findRecords($votersModel, null, $params);
+        if(!empty($voters)){
+            $leadersModel = new VotersdbLeaders;
+            $params_leader = ['voter_id' => $voters['id'], 'status' => 'active'];
+            $leaders = Data::findRecords($leadersModel, null, $params_leader);
+            if(!empty($leaders)){
+                //error message
+                Yii::$app->session->setFlash('error',"Voter is a Leader");
+                $this->redirect('/votersmgmt/manage/list');
+            }else{
+                //not a leader
+                $membersModel = new VotersdbMembers;
+                $params_member = ['voter_id' => $voters['id'], 'status' => 'active'];
+                $members = Data::findRecords($membersModel, null, $params_member);
+                if(!empty($members)){
+                    $member->status = 'deleted';
+                    if ($member->save(false)) {
+                       //
+                    }
+                }
+                $voters->status = 'deleted';
+                if($voters->save(false)){
+                    Yii::$app->session->setFlash('success',"Voter Successfully Deleted");
+                    $this->redirect('/votersmgmt/manage/list');
+                }
+            }
+        }
+    }
+
+>>>>>>> origin/develop
 }
 
 

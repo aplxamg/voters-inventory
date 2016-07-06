@@ -6,6 +6,19 @@ $this->title = 'Voters Management List';
 
 <h2 class="title"><?php echo $this->title; ?></h2><span class="line"></span>
 <div class="content">
+
+<?php if (Yii::$app->session->hasFlash('error')): ?>
+  <div class="alert alert-danger alert-dismissable">
+  <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+  <?= Yii::$app->session->getFlash('error') ?>
+  </div>
+<?php endif; ?>
+<?php if (Yii::$app->session->hasFlash('success')): ?>
+  <div class="alert alert-success alert-dismissable">
+  <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+  <?= Yii::$app->session->getFlash('success') ?>
+  </div>
+<?php endif; ?>
     <div class="text-center">
         <a href="/votersmgmt/manage/add"><button type="button" class="btn btn-primary btn-lg">Add Voter</button></a>
     </div>
@@ -30,12 +43,17 @@ $this->title = 'Voters Management List';
                     <td class="text-center">
                         <ul class="list-inline">
                             <li>
+<<<<<<< HEAD
                                 <a href="/votersmgmt/manage/edit/<?= $rec['id']; ?>">
+=======
+                                <a href="/votersmgmt/manage/edit/<?php echo $rec['id']; ?>">
+>>>>>>> origin/develop
                                     <button type="button" class="btn btn-primary" aria-label="Pencil">
                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                 </button></a>
                             </li>
                             <li>
+<<<<<<< HEAD
                                 <a href="/votersmgmt/manage/view/<?= $rec['id']; ?>">
                                     <button type="button" class="btn btn-primary" aria-label="View">
                                         <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
@@ -43,8 +61,12 @@ $this->title = 'Voters Management List';
                             </li>
                             <li>
                                 <button type="button" class="btn btn-danger" aria-label="Trash">
+=======
+                                <a href="/votersmgmt/manage/delete/<?php echo $rec['id']; ?>">
+                                    <button type="button" class="btn btn-danger" aria-label="Trash">
+>>>>>>> origin/develop
                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </button>
+                                </button></a>
                             </li>
                         </ul>
                     </td>

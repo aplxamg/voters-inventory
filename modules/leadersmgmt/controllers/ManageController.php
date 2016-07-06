@@ -8,6 +8,7 @@ use yii\web\Controller;
 use app\components\helpers\Data;
 use app\models\VotersdbVoters;
 use app\models\VotersdbLeaders;
+use app\models\VotersdbMembers;
 
 class ManageController extends \yii\web\Controller
 {
@@ -66,6 +67,31 @@ class ManageController extends \yii\web\Controller
         return $this->render('list', [
             'records'       => $records
         ]);
+    }
+
+    public function actionDelete($id)
+    {
+        $leadersModel = new VotersdbLeaders;
+        $params_leader = ['voter_id' => $id, 'status' => 'active'];
+        $leaders = Data::findRecords($leadersModel, null, $params_leader);
+        if(!empty($leaders)){
+            $membersModel = new VotersdbMembers;
+            $params_member = ['leader_id' => $leaders['id'], 'status' => 'active'];
+            $members = Data::findRecords($membersModel, null, $params_member,'all');
+            foreach($members as $member){
+                if(!empty($member)){
+                    $member->status = 'deleted';
+                    if ($member->save(false)) {
+                       //
+                    }
+                }
+            }
+            $leaders->status = 'deleted';
+            if ($leaders->save(false)) {
+              Yii::$app->session->setFlash('success',"Leader Successfully Deleted");
+              $this->redirect('/leadersmgmt/manage/list');
+            }
+        }
     }
 
 

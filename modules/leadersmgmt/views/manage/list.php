@@ -6,6 +6,12 @@ $this->title = 'Leaders Management List';
 
 <h2 class="title"><?php echo $this->title; ?></h2><span class="line"></span>
 <div class="content">
+<?php if (Yii::$app->session->hasFlash('success')): ?>
+  <div class="alert alert-success alert-dismissable">
+  <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+  <?= Yii::$app->session->getFlash('success') ?>
+  </div>
+<?php endif; ?>
     <div class="text-center">
         <a href="/leadersmgmt/manage/create"><button type="button" class="btn btn-primary btn-lg">Add Leader</button></a>
     </div>
@@ -25,15 +31,22 @@ $this->title = 'Leaders Management List';
                     <td class="text-center">
                         <ul class="list-inline">
                             <li>
-                                <a href="/votersmgmt/manage/edit/".<?= $rec['id']; ?>
+                                <a href="/leadersmgmt/manage/viewmembers/".<?= $rec['id']; ?>>
+                                    <button type="button" class="btn btn-success" aria-label="list">
+                                        <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                                </button></a>
+                            </li>
+                            <li>
+                                <a href="/leadersmgmt/manage/edit/<?php echo $rec['id']; ?>">
                                     <button type="button" class="btn btn-primary" aria-label="Pencil">
                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                 </button></a>
                             </li>
                             <li>
-                                <button type="button" class="btn btn-danger" aria-label="Trash">
+                                <a href="/leadersmgmt/manage/delete/<?php echo $rec['id'] ?>">
+                                    <button type="button" class="btn btn-danger" aria-label="Trash">
                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </button>
+                                    </button></a>
                             </li>
                         </ul>
                     </td>
