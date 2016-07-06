@@ -4,7 +4,8 @@ $(window).load(function(){
             "order" : [[0, 'asc']],
             "aoColumnDefs": [
 	      		{ "bSortable": false, "aTargets": [ 5 ] },
-                { "bSearchable": false, "aTargets": [5] }
+                { "bSearchable": false, "aTargets": [5] },
+                { "sWidth": "15%", "aTargets": [5] }
 	    	],
         });
     }

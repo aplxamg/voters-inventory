@@ -15,8 +15,8 @@ $this->title = 'Edit Voter\'s Profile';
             'method'      => 'post',
             'options'     => ['class' => 'form-horizontal'],
             'fieldConfig' => [
-                'template'      => "{label}\n<div class=\"col-lg-10\">{input}</div>\n<div class=\"col-lg-2\"></div><div class=\"col-lg-10\">{error}</div>",
-                'labelOptions'  => ['class' => 'col-lg-2 control-label'],
+                'template'      => "{label}\n<div class=\"col-lg-8\">{input}</div>\n<div class=\"col-lg-3\"></div><div class=\"col-lg-8\">{error}</div>",
+                'labelOptions'  => ['class' => 'col-lg-3 control-label'],
             ]
         ]); ?>
 
@@ -30,7 +30,7 @@ $this->title = 'Edit Voter\'s Profile';
 
         <div class="text-right">
             <ul class="list-inline">
-                <li><input type="submit" class="btn btn-primary back-btn" name="back" id="backBtn" value="Cancel"></li>
+                <li><input type="submit" class="btn btn-danger back-btn" name="back" id="backBtn" value="Back"></li>
                 <li><input type="submit" class="btn btn-primary save-btn" name="edit" id="saveBtn" value="Save"></li>
             </ul>
         </div>

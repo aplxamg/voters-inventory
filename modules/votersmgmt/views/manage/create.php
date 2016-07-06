@@ -30,8 +30,8 @@ $this->title = 'Add Voter';
             'method'      => 'post',
             'options'     => ['class' => 'form-horizontal'],
             'fieldConfig' => [
-                'template'      => "{label}\n<div class=\"col-lg-10\">{input}</div>\n<div class=\"col-lg-2\"></div><div class=\"col-lg-10\">{error}</div>",
-                'labelOptions'  => ['class' => 'col-lg-2 control-label'],
+                'template'      => "{label}\n<div class=\"col-lg-8\">{input}</div>\n<div class=\"col-lg-3\"></div><div class=\"col-lg-8\">{error}</div>",
+                'labelOptions'  => ['class' => 'col-lg-3 control-label'],
             ]
         ]); ?>
         <?= $form->field($model, 'voters_no')->textInput(['class' => 'form-control toUpper']); ?>
@@ -44,6 +44,7 @@ $this->title = 'Add Voter';
 
         <div class="text-right">
             <ul class="list-inline">
+                <li><a href="/votersmgmt/manage/list"  class="btn btn-danger back-btn" name="back" id="backBtn">Back</a></li>
                 <li><input type="submit" class="btn btn-primary save-btn" name="save" id="saveBtn" value="Save"></li>
                 <li><input type="submit" class="btn btn-success save-btn" name="save" id="saveAnotherBtn" value="Save and Continue"></li>
             </ul>

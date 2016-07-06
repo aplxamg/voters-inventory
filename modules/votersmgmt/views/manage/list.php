@@ -43,15 +43,15 @@ $this->title = 'Voters Management List';
                     <td class="text-center">
                         <ul class="list-inline">
                             <li>
-                                <a href="/votersmgmt/manage/edit/<?php echo $rec['id']; ?>">
-                                    <button type="button" class="btn btn-primary" aria-label="Pencil">
-                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                </button></a>
-                            </li>
-                            <li>
                                 <a href="/votersmgmt/manage/view/<?= $rec['id']; ?>">
                                     <button type="button" class="btn btn-primary" aria-label="View">
                                         <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                </button></a>
+                            </li>
+                            <li>
+                                <a href="/votersmgmt/manage/edit/<?php echo $rec['id']; ?>">
+                                    <button type="button" class="btn btn-success" aria-label="Pencil">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                 </button></a>
                             </li>
                             <li>
