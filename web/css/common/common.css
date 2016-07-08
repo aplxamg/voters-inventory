@@ -141,3 +141,12 @@ h1.title, h2.title, h3.title, h4.title, h5.title, h6.title {
     text-transform:lowercase;
 }
 
+.noPadding {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.text-left {
+    text-align: left !important;
+}
+

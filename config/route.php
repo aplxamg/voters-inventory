@@ -27,6 +27,8 @@ return [
         => '/<module>/<controller>/index',
         '/<module:leadersmgmt>/<controller:manage>/<action:delete>/<id:\d+>'
         => '/<module>/<controller>/<action>',
+        '/<module:leadersmgmt>/<controller:manage>/<action:(add|getlist)>'
+        => '/<module>/<controller>/<action>',
     ]
 ];
 ?>

@@ -40,11 +40,11 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['voter_id', 'assigned_precinct'], 'required'],
+            [['voter_id'], 'required'],
             [['voter_id'], 'integer'],
             [['status'], 'string'],
             [['assigned_precinct'], 'string', 'max' => 10],
-            [['voter_id'], 'exist', 'skipOnError' => true, 'targetClass' => Voters::className(), 'targetAttribute' => ['voter_id' => 'id']],
+            [['voter_id'], 'exist', 'skipOnError' => true, 'targetClass' => VotersdbVoters::className(), 'targetAttribute' => ['voter_id' => 'id']],
         ];
     }
 
@@ -83,6 +83,21 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
               ->from('_votersdb.voters as v')
               ->innerJoin('_votersdb.leaders as l', 'v.id = l.voter_id and l.`status` = "active"')
               ->where('v.status = "active"');
+        $command = $query->createCommand(Yii::$app->votersdb);
+        $rows = $command->queryAll();
+        return $rows;
+    }
+
+    public function getList($keyword)
+    {
+        $query = new Query();
+        $query->select('v.id, first_name, middle_name, last_name')
+              ->from('_votersdb.voters as v')
+              ->leftJoin('_votersdb.leaders l', 'l.voter_id = v.id and l.status="active"')
+              ->leftJoin('_votersdb.members m', 'v.id = m.voter_id and m.status="active"')
+              ->where(['v.status' => 'active', 'l.voter_id' => NULL, 'm.voter_id' => NULL])
+              ->andWhere(['like', 'CONCAT(first_name, " ", middle_name, " ", last_name)', $keyword])
+              ->limit(5);
         $command = $query->createCommand(Yii::$app->votersdb);
         $rows = $command->queryAll();
         return $rows;

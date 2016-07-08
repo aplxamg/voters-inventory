@@ -92,6 +92,33 @@ class ManageController extends \yii\web\Controller
               $this->redirect('/leadersmgmt/manage/list');
             }
         }
+
+    public function actionAdd()
+    {
+        $leadersModel = new VotersdbLeaders;
+        return $this->render('create', [
+            'model'     => $leadersModel
+        ]);
+    }
+
+    public function actionGetlist()
+    {
+        $keyword = $_GET['query'];
+        $leadersModel = new VotersdbLeaders;
+        $records = $leadersModel->getList($keyword);
+        $arr = [];
+        $arr['suggestions'] = [];
+        foreach($records as $rec) {
+            if(empty($rec['middle_name'])) {
+                $temp = [];
+                $temp['value'] = $rec['first_name']." ".$rec['last_name'];
+            } else {
+                $temp['value'] = $rec['first_name']." ".$rec['middle_name']." ".$rec['last_name'];
+            }
+            $temp['data'] = $rec['id'];
+            array_push($arr['suggestions'], $temp);
+        }
+        return json_encode($arr);
     }
 
 
