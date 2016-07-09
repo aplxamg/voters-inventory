@@ -11,6 +11,12 @@ return [
         => '/account/session/login',
         '/<action:(login|logout|dashboard)>'
         => '/account/session/<action>',
+
+        //Account Management
+        '/<module:account>/<controller:manage>/list'
+        => '/<module>/<controller>/index',
+        '/<module:account>/<controller:manage>/<action:add>'
+        => '/<module>/<controller>/<action>',
         // Voters Management
         '/<module:votersmgmt>/<controller:manage>/list'
         => '/<module>/<controller>/index',

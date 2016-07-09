@@ -1,4 +1,15 @@
 $(window).load(function(){
+    if($('#account_list').length != 0) {
+        $('#account_list').DataTable({
+            "order" : [[2, 'asc']],
+            "aoColumnDefs": [
+	      		{ "bSortable": false, "aTargets": [3] },
+                { "bSearchable": false, "aTargets": [3] },
+                { "sWidth": "15%", "aTargets": [0,1,3] },
+	    	],
+        });
+    }
+
     if($('#voters_list').length != 0) {
         $('#voters_list').DataTable({
             "order" : [[0, 'asc']],
