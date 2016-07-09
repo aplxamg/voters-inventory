@@ -1,6 +1,8 @@
 <?php
 use app\assets\DatatableAsset;
+use app\assets\AutocompleteAsset;
 DatatableAsset::register($this);
+AutocompleteAsset::register($this);
 $this->title = 'Leaders Management List';
 ?>
 
