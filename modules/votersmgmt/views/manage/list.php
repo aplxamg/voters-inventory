@@ -33,7 +33,8 @@ $this->title = 'Voters Management List';
             <th class="text-center" width="10%">Action</th>
         </thead>
         <tbody>
-            <?php foreach($records as $rec) { ?>
+            <?php foreach($records as $rec) {
+            ?>
                 <tr>
                     <td><?= $rec['voters_no'] ?></td>
                     <td><?= ucfirst($rec['first_name'])." ".ucfirst($rec['middle_name'])." ".ucfirst($rec['last_name']); ?></td>
@@ -43,20 +44,32 @@ $this->title = 'Voters Management List';
                     <td class="text-center">
                         <ul class="list-inline">
                             <li>
+                                <a href="/votersmgmt/manage/appointleader/<?= $rec['id']; ?>">
+                                    <button type="button" class="btn btn-warning" aria-label="View" data-toggle="tooltip" data-placement="top" title="View Voter Details">
+                                        <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
+                                </button></a>
+                            </li>
+                            <li>
+                                <a href="/votersmgmt/manage/appointleader/<?= $rec['id']; ?>">
+                                    <button type="button" class="btn btn-warning" aria-label="View" data-toggle="tooltip" data-placement="top" title="View Voter Details">
+                                        <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                                </button></a>
+                            </li>
+                            <li>
                                 <a href="/votersmgmt/manage/view/<?= $rec['id']; ?>">
-                                    <button type="button" class="btn btn-primary" aria-label="View">
+                                    <button type="button" class="btn btn-primary" aria-label="View" data-toggle="tooltip" data-placement="top" title="View Voter Details">
                                         <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                 </button></a>
                             </li>
                             <li>
                                 <a href="/votersmgmt/manage/edit/<?php echo $rec['id']; ?>">
-                                    <button type="button" class="btn btn-success" aria-label="Pencil">
+                                    <button type="button" class="btn btn-success" aria-label="Pencil" data-toggle="tooltip" data-placement="top" title="Edit Voter">
                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                 </button></a>
                             </li>
                             <li>
                                 <a href="/votersmgmt/manage/delete/<?php echo $rec['id']; ?>">
-                                    <button type="button" class="btn btn-danger" aria-label="Trash">
+                                    <button type="button" class="btn btn-danger" aria-label="Trash" data-toggle="tooltip" data-placement="top" title="Delete Voter">
                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                 </button></a>
                             </li>

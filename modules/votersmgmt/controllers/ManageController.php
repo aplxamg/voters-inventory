@@ -6,6 +6,7 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use app\components\helpers\Data;
+use app\components\helpers\User;
 use app\models\VotersdbVoters;
 use app\models\VotersdbLeaders;
 use app\models\VotersdbMembers;
@@ -22,12 +23,26 @@ class ManageController extends \yii\web\Controller
             'access' => [
                 'class' => AccessControl::className(),
                 // Pages that are included in the rule set
-                'only'  => ['index'],
+                'only'  => ['index', 'view', 'edit', 'add', 'delete'],
                 'rules' => [
                     [ // Pages that can be accessed when logged in
                         'allow'     => true,
-                        'actions'   => ['index'],
-                        'roles'     => ['@']
+                        'actions'   => ['index', 'view', 'edit', 'add', 'delete'],
+                        'roles'     => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            $identity = User::initUser();
+                            $adminAccess = ['index', 'view', 'edit', 'add', 'delete']; // functions / pages accessible by the admin
+                            $encoderAccess = ['index', 'view', 'edit', 'add', 'delete']; // functions / pages accessible by the encoder
+
+                            if($identity->user_type == 'admin' && in_array($action->id, $adminAccess)) {
+                                return true;
+                            } else if ($identity->user == 'encoder' && in_array($action->id, $encoderAccess)) {
+                                return true;
+                            } else { // falls for encoder user type
+                                return false;
+                            }
+
+                        },
                     ]
                 ],
                 'denyCallback' => function ($rule, $action) {
@@ -65,6 +80,16 @@ class ManageController extends \yii\web\Controller
         $votersModel = new VotersdbVoters;
         $params = ['status' => 'active'];
         $records = Data::findRecords($votersModel, null, $params, 'all');
+        $arr = [];
+        /*
+            foreach record here
+                $temp = [];
+                $temp['id'] = $rec['id'];
+                $params = ['status' => 'active', 'voter_id' => $rec['id']];
+                $records = Data::findRecords(leaderModel, null, $params, 'one');
+                $temp['leader'] = (count($records) != 0) ? $records['id'] : 0;
+                array_push($arr, $temp);
+        */
         return $this->render('list', [
             'records'       => $records
         ]);
