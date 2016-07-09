@@ -33,6 +33,11 @@ $(window).load(function(){
     }
 
     if($('#members_list').length != 0) {
-
+        $('#members_list').DataTable({
+            "aoColumnDefs": [
+                { "bSortable": false, "aTargets": [2] }
+            ],
+            "order": [[ 0, "desc" ]],
+        });
     }
 });
