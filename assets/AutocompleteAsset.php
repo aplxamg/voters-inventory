@@ -13,16 +13,15 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class VotersAsset extends AssetBundle
+class AutocompleteAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/modules/leadersmgmt.css'
+        'plugin\jQuery-Autocomplete-master\content\styles.css'
     ];
     public $js = [
-        'js/votersmgmt/create.js',
-        'js/leadersmgmt/create.js'
+        'plugin\jQuery-Autocomplete-master\src\jquery.autocomplete.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

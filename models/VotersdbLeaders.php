@@ -87,4 +87,19 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
         $rows = $command->queryAll();
         return $rows;
     }
+
+    public function getList($keyword)
+    {
+        $query = new Query();
+        $query->select('v.id, first_name, middle_name, last_name')
+              ->from('_votersdb.voters as v')
+              ->leftJoin('_votersdb.leaders l', 'l.voter_id = v.id and l.status="active"')
+              ->leftJoin('_votersdb.members m', 'v.id = m.member_id and m.status="active"')
+              ->where(['v.status' => 'active', 'l.voter_id' => NULL, 'm.member_id' => NULL])
+              ->andWhere(['like', 'CONCAT(first_name, " ", middle_name, " ", last_name)', $keyword])
+              ->limit(5);
+        $command = $query->createCommand(Yii::$app->votersdb);
+        $rows = $command->queryAll();
+        return $rows;
+    }
 }
