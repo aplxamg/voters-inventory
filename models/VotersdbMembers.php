@@ -9,7 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property integer $leader_id
- * @property integer $member_id
+ * @property integer $voter_id
  * @property string $status
  *
  * @property Leaders $leader
@@ -39,11 +39,11 @@ class VotersdbMembers extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['leader_id', 'member_id'], 'required'],
-            [['leader_id', 'member_id'], 'integer'],
+            [['leader_id', 'voter_id'], 'required'],
+            [['leader_id', 'voter_id'], 'integer'],
             [['status'], 'string'],
-            [['leader_id'], 'exist', 'skipOnError' => true, 'targetClass' => Leaders::className(), 'targetAttribute' => ['leader_id' => 'id']],
-            [['member_id'], 'exist', 'skipOnError' => true, 'targetClass' => Voters::className(), 'targetAttribute' => ['member_id' => 'id']],
+            [['leader_id'], 'exist', 'skipOnError' => true, 'targetClass' => VotersdbLeaders::className(), 'targetAttribute' => ['leader_id' => 'id']],
+            [['voter_id'], 'exist', 'skipOnError' => true, 'targetClass' => VotersdbVoters::className(), 'targetAttribute' => ['voter_id' => 'id']],
         ];
     }
 
@@ -55,7 +55,7 @@ class VotersdbMembers extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'leader_id' => 'Leader ID',
-            'member_id' => 'Member ID',
+            'voter_id' => 'Voter ID',
             'status' => 'Status',
         ];
     }
@@ -73,6 +73,6 @@ class VotersdbMembers extends \yii\db\ActiveRecord
      */
     public function getMember()
     {
-        return $this->hasOne(Voters::className(), ['id' => 'member_id']);
+        return $this->hasOne(Voters::className(), ['id' => 'voter_id']);
     }
 }

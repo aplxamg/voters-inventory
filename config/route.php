@@ -23,7 +23,7 @@ return [
         // Leaders Management
         '/<module:leadersmgmt>/<controller:manage>/list'
         => '/<module>/<controller>/index',
-        '/<module:leadersmgmt>/<controller:manage>/<action:delete>/<id:\d+>'
+        '/<module:leadersmgmt>/<controller:manage>/<action:(delete|edit|memberlist)>/<id:\d+>'
         => '/<module>/<controller>/<action>',
         '/<module:leadersmgmt>/<controller:manage>/<action:(add|getlist)>'
         => '/<module>/<controller>/<action>',
