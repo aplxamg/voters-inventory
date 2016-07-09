@@ -14,7 +14,6 @@ $this->title = 'Account Management List';
         <thead>
             <th class="text-center" width="10%">User Type</th>
             <th class="text-center" width="10%">Username</th>
-            <th class="text-center" width="20%">E-mail Address</th>
             <th class="text-center" width="30%">Inserted Time</th>
             <th class="text-center" width="10%">Action</th>
         </thead>
@@ -23,7 +22,6 @@ $this->title = 'Account Management List';
                 <tr>
                     <td class="break-word"><?= $rec['user_type'] ?></td>
                     <td class="break-word"><?= $rec['username'] ?></td>
-                    <td class="break-word"><?= $rec['email_address']?></td>
                     <td class="text-center"><?= $rec['ins_time'] ?></td>
                     <td class="text-center">
                         <ul class="list-inline">

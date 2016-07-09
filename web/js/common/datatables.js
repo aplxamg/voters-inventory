@@ -1,11 +1,11 @@
 $(window).load(function(){
     if($('#account_list').length != 0) {
         $('#account_list').DataTable({
-            "order" : [[0, 'asc']],
+            "order" : [[2, 'asc']],
             "aoColumnDefs": [
-	      		{ "bSortable": false, "aTargets": [ 4 ] },
-                { "bSearchable": false, "aTargets": [4] },
-                { "sWidth": "15%", "aTargets": [0,1,3,4] },
+	      		{ "bSortable": false, "aTargets": [3] },
+                { "bSearchable": false, "aTargets": [3] },
+                { "sWidth": "15%", "aTargets": [0,1,3] },
 	    	],
         });
     }

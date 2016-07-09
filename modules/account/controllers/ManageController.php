@@ -67,6 +67,30 @@ class ManageController extends \yii\web\Controller
             'records'       => $records
         ]);
     }
+
+    public function actionAdd()
+    {
+        $userModel = new User;
+        $errorMsg   = 0;
+        if(Yii::$app->request->isPost) {
+            $values = Yii::$app->request->post('User');
+            $params = [ 'status' => 'active', 'username' => $values['username']];
+            $record = Data::findRecords($userModel, null, $params);
+            if(count($record) == 0) {
+                if($userModel->saveAccount($userModel,$values)) {
+                    return $this->redirect('/account/manage/list');
+                } else {
+                    $errorMsg = 1;
+                }
+            } else {
+                $errorMsg = 2;
+            }
+        }
+        return $this->render('create', [
+            'model' => $userModel,
+            'error' => $errorMsg
+        ]);
+    }
 }
 
 
