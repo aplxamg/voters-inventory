@@ -92,12 +92,69 @@ class ManageController extends \yii\web\Controller
               $this->redirect('/leadersmgmt/manage/list');
             }
         }
+    }
 
     public function actionAdd()
     {
         $leadersModel = new VotersdbLeaders;
+
         return $this->render('create', [
             'model'     => $leadersModel
+        ]);
+    }
+
+    public function actionEdit($id)
+    {
+        $errorMsg = 0;
+        $leadersModel = new VotersdbLeaders;
+        $membersModel = new VotersdbMembers;
+        $votersModel  = new VotersdbVoters;
+        $params       = ['status' => 'active', 'id' => $id];
+        $record       = Data::findRecords($leadersModel, null, $params);
+        if(count($record) == 0) {
+            return $this->redirect('/leadersmgmt/manage/list');
+        }
+        $params       = ['status' => 'active', 'leader_id' => $id];
+        $members      = Data::findRecords($membersModel, null, $params, 'all');
+        $list         = [];
+        $memberIds    = [];
+        if(count($members) != 0) {
+            foreach($members as $value) {
+                $params = ['status' => 'active', 'id' => $value['voter_id']];
+                $voter             = Data::findRecords($votersModel, null, $params );
+                if(count($voter) != 0) {
+                    $temp = [];
+                    $temp['voter_id'] = $value['voter_id'];
+                    if(empty($voter['middle_name'])) {
+                        $temp['name'] = $voter['first_name'].' '.$voter['last_name'];
+                    } else {
+                        $temp['name'] = $voter['first_name'].' '.$voter['middle_name'].' '.$voter['last_name'];
+                    }
+                    array_push($list, $temp);
+                    array_push($memberIds, $value['voter_id']);
+                }
+            }
+        }
+
+        if(Yii::$app->request->isPost) {
+            $precinct = strtoupper(Yii::$app->request->post('assigned_precinct'));
+            $members  = Yii::$app->request->post('members');
+            if(count($members) == 0) {
+                $members = [];
+            }
+
+            if($leadersModel->saveMembers($id, $precinct, $members, $memberIds)) {
+                return $this->redirect('/leadersmgmt/manage/list');
+            } else {
+                $errorMsg = 1;
+            }
+        }
+
+
+        return $this->render('create', [
+            'model'     => $record,
+            'members'   => $list,
+            'error'     => $errorMsg
         ]);
     }
 
@@ -119,6 +176,39 @@ class ManageController extends \yii\web\Controller
             array_push($arr['suggestions'], $temp);
         }
         return json_encode($arr);
+    }
+
+    public function actionMemberlist($id)
+    {
+        $model          = new VotersdbMembers;
+        $votersModel    = new VotersdbVoters;
+        $params         = ['status' => 'active', 'leader_id' => $id];
+        $records        = Data::findRecords($model, null, $params, 'all');
+        $list           = [];
+
+        if(count($records)!=0) {
+            foreach($records as $value) {
+                $temp   = [];
+                $params = ['status' => 'active', 'id' => $value['voter_id']];
+                $voter  = Data::findRecords($votersModel, null, $params );
+                if(count($voter) != 0) {
+                    $temp = [];
+                    $temp['id'] = $value['id'];
+                    $temp['vin'] = $voter['voters_no'];
+                    $temp['voter_id'] = $value['voter_id'];
+                    if(empty($voter['middle_name'])) {
+                        $temp['name'] = $voter['first_name'].' '.$voter['last_name'];
+                    } else {
+                        $temp['name'] = $voter['first_name'].' '.$voter['middle_name'].' '.$voter['last_name'];
+                    }
+                    array_push($list, $temp);
+                }
+            }
+        }
+
+        return $this->render('viewList', [
+            'list'     => $list
+        ]);
     }
 
 

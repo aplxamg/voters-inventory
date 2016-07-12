@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\db\Query;
+use app\components\helpers\Data;
 
 /**
  * This is the model class for table "leaders".
@@ -79,7 +80,7 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
 
     public function getLeadersList(){
         $query = new Query();
-        $query->select('v.id, v.voters_no, v.first_name, v.middle_name, v.last_name, l.assigned_precinct')
+        $query->select('v.id, l.id as leader_id,v.voters_no, v.first_name, v.middle_name, v.last_name, l.assigned_precinct')
               ->from('_votersdb.voters as v')
               ->innerJoin('_votersdb.leaders as l', 'v.id = l.voter_id and l.`status` = "active"')
               ->where('v.status = "active"');
@@ -101,5 +102,64 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
         $command = $query->createCommand(Yii::$app->votersdb);
         $rows = $command->queryAll();
         return $rows;
+    }
+
+    public function saveMembers($id, $precinct_no, $members, $existingMembers)
+    {
+        $connection = Yii::$app->votersdb;
+        $transaction =  $connection->beginTransaction();
+
+        try {
+            $record = self::findOne($id);
+            $record->assigned_precinct = $precinct_no;
+            if($record->save()) {
+                $addMembers = array_diff($members, $existingMembers);
+                $delMembers = array_diff($existingMembers, $members);
+
+                if(count($addMembers) != 0) {
+                    foreach($addMembers as $value) {
+                        $memberModel = new VotersdbMembers;
+                        $memberModel->leader_id = $id;
+                        $memberModel->voter_id = $value;
+                        $memberModel->status = 'active';
+                        if(!$memberModel->save()) {
+                            var_dump($memberModel->errors);
+                            $transaction->rollBack();
+                            return false;
+                        }
+                    }
+                }
+
+                if(count($delMembers) != 0) {
+                    $memberModel = new VotersdbMembers;
+                    foreach($delMembers as $value) {
+                        $params = ['status' => 'active', 'voter_id' => $value];
+                        $member = Data::findRecords($memberModel, null, $params);
+                        if(count($member) != 0) {
+                            $member->status = 'deleted';
+                            if(!$member->save()) {
+                                var_dump($member->errors);
+                                $transaction->rollBack();
+                                return false;
+                            }
+                        }
+                    }
+                }
+
+                $transaction->commit();
+                return true;
+
+            } else {
+                var_dump($record->errors);
+                $transaction->rollBack();
+                return false;
+            }
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            return false;
+        }
+
+
+
     }
 }

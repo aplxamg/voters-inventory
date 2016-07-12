@@ -31,4 +31,13 @@ $(window).load(function(){
             "order": [[ 0, "desc" ]],
         });
     }
+
+    if($('#members_list').length != 0) {
+        $('#members_list').DataTable({
+            "aoColumnDefs": [
+                { "bSortable": false, "aTargets": [2] }
+            ],
+            "order": [[ 0, "desc" ]],
+        });
+    }
 });

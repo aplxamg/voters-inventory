@@ -14,9 +14,11 @@ $this->title = 'Leaders Management List';
   <?= Yii::$app->session->getFlash('success') ?>
   </div>
 <?php endif; ?>
+<!--
     <div class="text-center">
-        <a href="/leadersmgmt/manage/create"><button type="button" class="btn btn-primary btn-lg">Add Leader</button></a>
+        <a href="/leadersmgmt/manage/add"><button type="button" class="btn btn-primary btn-lg">Add Leader</button></a>
     </div>
+-->
     <table id="leaders_list" class="table table-striped table-bordered dataTable display">
         <thead>
             <th>VIN</th>
@@ -33,20 +35,20 @@ $this->title = 'Leaders Management List';
                     <td class="text-center">
                         <ul class="list-inline">
                             <li>
-                                <a href="/leadersmgmt/manage/viewmembers/".<?= $rec['id']; ?>>
-                                    <button type="button" class="btn btn-success" aria-label="list">
+                                <a href="/leadersmgmt/manage/memberlist/<?= $rec['leader_id']; ?>">
+                                    <button type="button" class="btn btn-success" aria-label="list" data-toggle="tooltip" data-placement="top" title="View Members">
                                         <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
                                 </button></a>
                             </li>
                             <li>
-                                <a href="/leadersmgmt/manage/edit/<?php echo $rec['id']; ?>">
-                                    <button type="button" class="btn btn-primary" aria-label="Pencil">
+                                <a href="/leadersmgmt/manage/edit/<?php echo $rec['leader_id']; ?>">
+                                    <button type="button" class="btn btn-primary" aria-label="Pencil" data-toggle="tooltip" data-placement="top" title="Edit Members">
                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                 </button></a>
                             </li>
                             <li>
                                 <a href="/leadersmgmt/manage/delete/<?php echo $rec['id'] ?>">
-                                    <button type="button" class="btn btn-danger" aria-label="Trash">
+                                    <button type="button" class="btn btn-danger" aria-label="Trash" data-toggle="tooltip" data-placement="top" title="Delete Leader">
                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                     </button></a>
                             </li>
