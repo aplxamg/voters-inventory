@@ -211,6 +211,11 @@ class ManageController extends \yii\web\Controller
         ]);
     }
 
+    public function actionDeletemember($member_id)
+    {
+        $model = new VotersdbMembers;
+    }
+
 
 }
 

@@ -32,8 +32,8 @@ $(window).load(function(){
         });
     }
 
-    if($('#members_list').length != 0) {
-        $('#members_list').DataTable({
+    if($('#view_members_list').length != 0) {
+        $('#view_members_list').DataTable({
             "aoColumnDefs": [
                 { "bSortable": false, "aTargets": [2] }
             ],

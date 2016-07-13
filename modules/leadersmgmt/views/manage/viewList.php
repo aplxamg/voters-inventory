@@ -1,12 +1,14 @@
 <?php
     use app\assets\DatatableAsset;
+    use app\assets\MsgboxAsset;
     DatatableAsset::register($this);
+    MsgboxAsset::register($this);
     $this->title = 'Members List';
 ?>
 
 <h2 class="title"><?php echo $this->title; ?></h2><span class="line"></span>
 <div class="content">
-    <table id="members_list" class="table table-striped table-bordered dataTable display">
+    <table id="view_members_list" class="table table-striped table-bordered dataTable display">
         <thead>
             <th class="text-center" width="30%">VIN</th>
             <th class="text-center" width="60%">Voter's Name</th>
@@ -31,10 +33,9 @@
                                 </button>
                             </li>
                             <li>
-                                <a href="/leadersmgmt/manage/deletemember/<?= $value['id']; ?>">
-                                    <button type="button" class="btn btn-danger" aria-label="list" data-toggle="tooltip" data-placement="top" title="Delete Member">
-                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </button></a>
+                                <button type="button" class="btn btn-danger delete-button delete-member" aria-label="list" data-toggle="tooltip" data-placement="top" title="Delete Member" id="<?= $value['id'] ?>">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                </button>
                             </li>
                         </ul>
                     </td>

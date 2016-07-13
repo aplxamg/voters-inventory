@@ -21,7 +21,8 @@ class MsgboxAsset extends AssetBundle
         'plugin/bootstrap-sweetalert-master/dist/sweetalert.css'
     ];
     public $js = [
-        'plugin/bootstrap-sweetalert-master/dist/sweetalert.js'
+        'plugin/bootstrap-sweetalert-master/dist/sweetalert.js',
+        'js/common/msgbox.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
