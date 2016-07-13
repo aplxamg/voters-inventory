@@ -91,6 +91,21 @@ class ManageController extends \yii\web\Controller
             'error' => $errorMsg
         ]);
     }
+
+    public function actionEdit($id)
+    {
+        $userModel = new User;
+
+        if(Yii::$app->request->isPost) {
+            $values = Yii::$app->request->post('VotersdbVoters');
+            $votersModel->saveVoter($votersModel,$id,$values);
+            return $this->redirect('/votersmgmt/manage/list');
+        }
+
+        $params = ['id' => $id,'status' => 'active'];
+        $user = Data::findRecords($userModel, null, $params, 'one');
+        return $this->render('edit',['user' => $user]);
+    }
 }
 
 

@@ -17,6 +17,8 @@ return [
         => '/<module>/<controller>/index',
         '/<module:account>/<controller:manage>/<action:add>'
         => '/<module>/<controller>/<action>',
+        '/<module:account>/<controller:manage>/<action:(view|edit)>/<id:\d+>'
+        => '/<module>/<controller>/<action>',
         // Voters Management
         '/<module:votersmgmt>/<controller:manage>/list'
         => '/<module>/<controller>/index',
