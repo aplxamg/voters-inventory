@@ -211,6 +211,29 @@ class ManageController extends \yii\web\Controller
         ]);
     }
 
+    public function actionLeader($operator, $id) {
+        // Default Variables needed
+        $errorCode = 0;
+        $msg = '';
+        $url = '/votersmgmt/manage/list';
+        // Initialize Models
+        $model = new VotersdbMembers;
+        $leadersModel = new VotersdbLeaders;
+
+        $params = ['voter_id' => $id, 'status' => 'active'];
+        $record = Data::findRecords($model, null, $params, 'all');
+        if(count($record) != 0) {
+            $errorCode = 1;
+            $msg = 'Voter is already a member';
+        } else {
+            if(!$leadersModel->saveLeader($leadersModel, $id, $operator)) {
+              $errorCode = 1;
+              $msg = 'An error occured. Please try again later.';
+            }
+        }
+        return json_encode(['error' => $errorCode, 'msg' => $msg, 'url' => $url]);
+    }
+
     public function actionDeletemember($member_id)
     {
         $model = new VotersdbMembers;

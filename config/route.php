@@ -28,12 +28,16 @@ return [
         => '/<module>/<controller>/<action>',
         '/<module:votersmgmt>/<controller:manage>/<action:delete>/<id:\d+>'
         => '/<module>/<controller>/<action>',
+        '/<module:votersmgmt>/<controller:manage>/<action:vote>/<operator:(set|reset)>/<id:\d+>'
+        => '/<module>/<controller>/<action>',
         // Leaders Management
         '/<module:leadersmgmt>/<controller:manage>/list'
         => '/<module>/<controller>/index',
         '/<module:leadersmgmt>/<controller:manage>/<action:(delete|edit|memberlist)>/<id:\d+>'
         => '/<module>/<controller>/<action>',
         '/<module:leadersmgmt>/<controller:manage>/<action:(add|getlist)>'
+        => '/<module>/<controller>/<action>',
+        '/<module:leadersmgmt>/<controller:manage>/<action:leader>/<operator:(appoint|remove)>/<id:\d+>'
         => '/<module>/<controller>/<action>',
     ]
 ];

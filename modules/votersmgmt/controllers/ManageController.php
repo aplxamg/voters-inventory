@@ -77,21 +77,35 @@ class ManageController extends \yii\web\Controller
 
     public function actionIndex()
     {
+        $identity = User::initUser();
         $votersModel = new VotersdbVoters;
+        $leaderModel = new VotersdbLeaders;
         $params = ['status' => 'active'];
         $records = Data::findRecords($votersModel, null, $params, 'all');
         $arr = [];
-        /*
-            foreach record here
-                $temp = [];
-                $temp['id'] = $rec['id'];
-                $params = ['status' => 'active', 'voter_id' => $rec['id']];
-                $records = Data::findRecords(leaderModel, null, $params, 'one');
-                $temp['leader'] = (count($records) != 0) ? $records['id'] : 0;
-                array_push($arr, $temp);
-        */
+        foreach ($records as $rec) {
+            $temp  = [];
+            $temp['id']     = $rec['id'];
+            $temp['vin']    = $rec['voters_no'];
+            if(empty($voter['middle_name'])) {
+                $temp['name'] = ucfirst($rec['first_name']).' '.ucfirst($rec['last_name']);
+            } else {
+                $temp['name'] = ucfirst($rec['first_name']).' '.ucfirst($rec['middle_name']).' '.ucfirst($rec['last_name']);
+            }
+            $temp['address']    = $rec['address'];
+            $temp['birthdate']  = $rec['birthdate'];
+            $temp['precinct']   = $rec['precinct_no'];
+            $temp['voting_status']   = $rec['voting_status'];
+            $params = ['status' => 'active', 'voter_id' => $rec['id']];
+            $leader = Data::findRecords($leaderModel, null, $params);
+            $temp['leader'] = count($leader);
+            $temp['assigned_precinct'] = (count($leader) != 0) ? $leader['assigned_precinct'] : '';
+            array_push($arr, $temp);
+        }
+
         return $this->render('list', [
-            'records'       => $records
+            'records'       => $arr,
+            'user_type'     => $identity->user_type
         ]);
     }
 
@@ -165,6 +179,8 @@ class ManageController extends \yii\web\Controller
 
     public function actionDelete($id)
     {
+        $errorCode = 0;
+        $msg = '';
         $votersModel = new VotersdbVoters;
         $params = ['id' => intval($id), 'status' => 'active'];
         $voters = Data::findRecords($votersModel, null, $params);
@@ -173,9 +189,8 @@ class ManageController extends \yii\web\Controller
             $params_leader = ['voter_id' => $voters['id'], 'status' => 'active'];
             $leaders = Data::findRecords($leadersModel, null, $params_leader);
             if(!empty($leaders)){
-                //error message
-                Yii::$app->session->setFlash('error',"Voter is a Leader");
-                $this->redirect('/votersmgmt/manage/list');
+                $errorCode = 1;
+                $msg = 'Voter is a Leader';
             }else{
                 //not a leader
                 $membersModel = new VotersdbMembers;
@@ -189,11 +204,26 @@ class ManageController extends \yii\web\Controller
                 }
                 $voters->status = 'deleted';
                 if($voters->save(false)){
-                    Yii::$app->session->setFlash('success',"Voter Successfully Deleted");
-                    $this->redirect('/votersmgmt/manage/list');
                 }
             }
         }
+        $url = '/votersmgmt/manage/list';
+        return json_encode(['error' => $errorCode, 'msg' => $msg, 'url' => $url]);
+    }
+
+    public function actionVote($operator, $id)
+    {
+        $errorCode = 0;
+        $msg = '';
+        $url = '/votersmgmt/manage/list';
+
+        $model = new VotersdbVoters;
+        if(!$model->updateVote($id, $operator)) {
+            $errorCode = 1;
+            $msg = 'An error occured. Please try again later';
+        }
+        return json_encode(['error' => $errorCode, 'msg' => $msg, 'url' => $url]);
+
     }
 
 }

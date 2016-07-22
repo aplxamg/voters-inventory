@@ -16,6 +16,7 @@ use Yii;
  * @property string $address
  * @property string $precinct_no
  * @property string $status
+ * @property string $voting_status
  *
  * @property Leaders[] $leaders
  * @property Members[] $members
@@ -45,7 +46,7 @@ class VotersdbVoters extends \yii\db\ActiveRecord
     {
         return [
             [['voters_no', 'first_name', 'last_name', 'birthdate', 'precinct_no'], 'required'],
-            [['address', 'status'], 'string'],
+            [['address', 'status', 'voting_status'], 'string'],
             [['voters_no'], 'string', 'max' => 30],
             [['first_name', 'middle_name', 'last_name'], 'string', 'max' => 50],
             [['birthdate', 'precinct_no'], 'string', 'max' => 10],
@@ -59,14 +60,15 @@ class VotersdbVoters extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'voters_no' => 'Voters Number',
+            'voters_no' => 'Voters No',
             'first_name' => 'First Name',
             'middle_name' => 'Middle Name',
             'last_name' => 'Last Name',
             'birthdate' => 'Birthdate',
             'address' => 'Address',
-            'precinct_no' => 'Precinct Number',
+            'precinct_no' => 'Precinct No',
             'status' => 'Status',
+            'voting_status' => 'Voting Status',
         ];
     }
 
@@ -83,12 +85,7 @@ class VotersdbVoters extends \yii\db\ActiveRecord
      */
     public function getMembers()
     {
-        return $this->hasMany(Members::className(), ['member_id' => 'id']);
-    }
-
-
-    public function getVoter($id) {
-        return VotersdbVoters::find()-> where(['id'=>$id])->one();
+        return $this->hasMany(Members::className(), ['voter_id' => 'id']);
     }
 
     /*
@@ -114,8 +111,24 @@ class VotersdbVoters extends \yii\db\ActiveRecord
         $model->address         = strtoupper(trim($values['address']));
         $model->precinct_no     = strtoupper(trim($values['precinct_no']));
         $model->status          = 'active';
+        $model->voting_status   = 'N';
 
         return $model->save();
     }
 
+    public function updateVote($id, $action)
+    {
+        $record  = self::findOne($id);
+        if($record != null) {
+            if($action == 'set') {
+                $record->voting_status = 'Y';
+            } else {
+                $record->voting_status = 'N';
+            }
+        } else {
+            return false;
+        }
+
+        return $record->save();
+    }
 }

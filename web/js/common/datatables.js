@@ -14,9 +14,9 @@ $(window).load(function(){
         $('#voters_list').DataTable({
             "order" : [[0, 'asc']],
             "aoColumnDefs": [
-	      		{ "bSortable": false, "aTargets": [ 5 ] },
-                { "bSearchable": false, "aTargets": [5] },
-                { "sWidth": "15%", "aTargets": [5] }
+	      		{ "bSortable": false, "aTargets": [ 6,7 ] },
+                { "bSearchable": false, "aTargets": [6,7] },
+                { "sWidth": "15%", "aTargets": [6,7] }
 	    	],
         });
     }

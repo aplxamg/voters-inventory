@@ -158,8 +158,24 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
             $transaction->rollBack();
             return false;
         }
+    }
 
+    public function saveLeader($model, $id, $action)
+    {
+        $params = ['voter_id' => $id];
+        $record  = self::find()->where($params)->one();
+        if($record == null && $action == 'appoint') { // Add Leader
+            $model->voter_id = $id;
+            $model->assigned_precinct = '';
+            $model->status = 'active';
+        } else if ($record != null && $action == 'appoint') { // Update Leader
+            $model = $record;
+            $model->status = 'active';
+        } else if ($record != null && $action == 'remove') { // Remove Leader
+            $model = $record;
+            $model->status = 'deleted';
+        }
 
-
+        return $model->save();
     }
 }
