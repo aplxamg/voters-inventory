@@ -23,20 +23,23 @@ class ManageController extends \yii\web\Controller
             'access' => [
                 'class' => AccessControl::className(),
                 // Pages that are included in the rule set
-                'only'  => ['index', 'view', 'edit', 'add', 'delete'],
+                'only'  => ['index', 'view', 'edit', 'add', 'delete', 'vote'],
                 'rules' => [
                     [ // Pages that can be accessed when logged in
                         'allow'     => true,
-                        'actions'   => ['index', 'view', 'edit', 'add', 'delete'],
+                        'actions'   => ['index', 'view', 'edit', 'add', 'delete', 'vote'],
                         'roles'     => ['@'],
                         'matchCallback' => function ($rule, $action) {
                             $identity = User::initUser();
-                            $adminAccess = ['index', 'view', 'edit', 'add', 'delete']; // functions / pages accessible by the admin
+                            $adminAccess = ['index', 'view', 'edit', 'add', 'delete', 'vote']; // functions / pages accessible by the admin
                             $encoderAccess = ['index', 'view', 'edit', 'add', 'delete']; // functions / pages accessible by the encoder
+                            $leaderAccess = ['vote'];
 
                             if($identity->user_type == 'admin' && in_array($action->id, $adminAccess)) {
                                 return true;
                             } else if ($identity->user == 'encoder' && in_array($action->id, $encoderAccess)) {
+                                return true;
+                            } else if ($identity->user == 'leader' && in_array($action->id, $leaderAccess)) {
                                 return true;
                             } else { // falls for encoder user type
                                 return false;
