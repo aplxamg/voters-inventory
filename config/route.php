@@ -28,7 +28,7 @@ return [
         => '/<module>/<controller>/<action>',
         '/<module:votersmgmt>/<controller:manage>/<action:delete>/<id:\d+>'
         => '/<module>/<controller>/<action>',
-        '/<module:votersmgmt>/<controller:manage>/<action:vote>/<operator:(set|reset)>/<id:\d+>'
+        '/<module:votersmgmt>/<controller:manage>/<action:vote>/<operator:(set|reset)>/<id:\d+>/<user:(voter|leader)>/<leader:\d+>'
         => '/<module>/<controller>/<action>',
         // Leaders Management
         '/<module:leadersmgmt>/<controller:manage>/list'
@@ -38,6 +38,8 @@ return [
         '/<module:leadersmgmt>/<controller:manage>/<action:(add|getlist)>'
         => '/<module>/<controller>/<action>',
         '/<module:leadersmgmt>/<controller:manage>/<action:leader>/<operator:(appoint|remove)>/<id:\d+>'
+        => '/<module>/<controller>/<action>',
+        '/<module:leadersmgmt>/<controller:manage>/<action:deletemember>/<member:\d+>/<leader:\d+>'
         => '/<module>/<controller>/<action>',
     ]
 ];

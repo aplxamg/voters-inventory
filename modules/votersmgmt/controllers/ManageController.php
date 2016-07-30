@@ -214,11 +214,14 @@ class ManageController extends \yii\web\Controller
         return json_encode(['error' => $errorCode, 'msg' => $msg, 'url' => $url]);
     }
 
-    public function actionVote($operator, $id)
+    public function actionVote($operator, $id, $user, $leader)
     {
         $errorCode = 0;
         $msg = '';
         $url = '/votersmgmt/manage/list';
+        if($user == 'leader') {
+            $url = '/leadersmgmt/manage/memberlist/'.$leader;
+        }
 
         $model = new VotersdbVoters;
         if(!$model->updateVote($id, $operator)) {

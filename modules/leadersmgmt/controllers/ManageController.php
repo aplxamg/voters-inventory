@@ -6,6 +6,7 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use app\components\helpers\Data;
+use app\components\helpers\User;
 use app\models\VotersdbVoters;
 use app\models\VotersdbLeaders;
 use app\models\VotersdbMembers;
@@ -180,6 +181,7 @@ class ManageController extends \yii\web\Controller
 
     public function actionMemberlist($id)
     {
+        $identity       = User::initUser();
         $model          = new VotersdbMembers;
         $votersModel    = new VotersdbVoters;
         $params         = ['status' => 'active', 'leader_id' => $id];
@@ -196,6 +198,8 @@ class ManageController extends \yii\web\Controller
                     $temp['id'] = $value['id'];
                     $temp['vin'] = $voter['voters_no'];
                     $temp['voter_id'] = $value['voter_id'];
+                    $temp['vote']   = $voter['voting_status'];
+                    $temp['voter_id'] = $voter['id'];
                     if(empty($voter['middle_name'])) {
                         $temp['name'] = $voter['first_name'].' '.$voter['last_name'];
                     } else {
@@ -207,7 +211,9 @@ class ManageController extends \yii\web\Controller
         }
 
         return $this->render('viewList', [
-            'list'     => $list
+            'list'          => $list,
+            'identity'      => $identity,
+            'id'            => $id
         ]);
     }
 
@@ -234,9 +240,26 @@ class ManageController extends \yii\web\Controller
         return json_encode(['error' => $errorCode, 'msg' => $msg, 'url' => $url]);
     }
 
-    public function actionDeletemember($member_id)
+    public function actionDeletemember($member, $leader)
     {
-        $model = new VotersdbMembers;
+        $errorCode = 0;
+        $msg = '';
+        $model  = new VotersdbMembers;
+        $params = ['id' => $member, 'leader_id' => $leader,'status' => 'active'];
+        $record = Data::findRecords($model, null, $params);
+        if(empty($record)) {
+            $errorCode = 1;
+            $msg = 'Voter is not your member';
+        } else {
+            $record->status = 'deleted';
+            if(!$record->save()) {
+                $errorCode = 1;
+                $msg = 'An error occured. Please try again later';
+            }
+        }
+
+        $url = '/leadersmgmt/manage/memberlist/' . $leader;
+        return json_encode(['error' => $errorCode, 'msg' => $msg, 'url' => $url]);
     }
 
 

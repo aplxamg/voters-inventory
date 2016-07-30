@@ -3,13 +3,17 @@ $(document).on('click', '.msgbox-button', function(){
     var title = null;
     var msg = null;
     var url = null;
+    var leader = 0;
 
     var a = $(this).hasClass('delete-voter');
     var b = $(this).hasClass('approve-leader');
     var c = $(this).hasClass('remove-leader');
     var d = $(this).hasClass('set-vote');
     var e = $(this).hasClass('reset-vote');
-    if(a || b || c || d || e) {
+    var f = $(this).hasClass('member-set-vote');
+    var g = $(this).hasClass('member-reset-vote');
+    var h = $(this).hasClass('delete-member');
+    if(a || b || c || d || e || f || g || h) {
         if (a) {
             url = '/votersmgmt/manage/delete/' + id;
             title = 'Delete Voter';
@@ -23,13 +27,28 @@ $(document).on('click', '.msgbox-button', function(){
             title = 'Remove Leader';
             msg = 'Are you sure you want to remove voter as leader?';
         } else if (d) {
-            url = '/votersmgmt/manage/vote/set/' + id;
+            url = '/votersmgmt/manage/vote/set/' + id + '/voter/' + leader;
             title = 'Set as voted';
             msg = 'Are you sure you want to set vote?';
         } else if (e) {
-            url = '/votersmgmt/manage/vote/reset/' + id;
+            url = '/votersmgmt/manage/vote/reset/' + id + '/voter/' + leader;
             title = 'Reset Vote';
             msg = 'Are you sure you want to reset vote?';
+        } else if (f) {
+            leader = $(this).data('leader');
+            url = '/votersmgmt/manage/vote/set/' + id + '/leader/' + leader;
+            title = 'Set as voted';
+            msg = 'Are you sure you want to set vote?';
+        } else if (g) {
+            leader = $(this).data('leader');
+            url = '/votersmgmt/manage/vote/reset/' + id + '/leader/' + leader;
+            title = 'Reset Vote';
+            msg = 'Are you sure you want to reset vote?';
+        } else if (h) {
+            leader = $(this).data('leader');
+            url = '/leadersmgmt/manage/deletemember/' + id + '/' + leader;
+            title = 'Delete Member';
+            msg = 'Are you sure you want to delete member?';
         }
 
         swal({
