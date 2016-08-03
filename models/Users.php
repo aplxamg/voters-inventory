@@ -20,7 +20,7 @@ use yii\web\IdentityInterface;
  *
  * @property UserInfo[] $userInfos
  */
-class User extends ActiveRecord implements IdentityInterface
+class Users extends ActiveRecord implements IdentityInterface
 {
     /**
      * @inheritdoc
@@ -36,7 +36,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['id', 'user_type', 'username', 'password', 'email_address', 'status', 'ins_time', 'up_time'], 'required'],
+            [['user_type', 'username', 'password', 'status', 'ins_time', 'up_time'], 'required'],
             [['id'], 'integer'],
             [['user_type', 'status'], 'string'],
             [['ins_time', 'up_time'], 'safe'],
@@ -142,14 +142,25 @@ class User extends ActiveRecord implements IdentityInterface
         return Yii::$app->getSecurity()->validatePassword($password, $hash_password);
     }
 
-    public function saveAccount($accountModel,$value){
-        $accountModel->user_type = $value['user_type'];
-        $accountModel->username  = $value['username'];
-        $accountModel->status = 'active';
-        $accountModel->ins_time  = $accountModel->up_time = Yii::$app->formatter->asDatetime('now');
-        $accountModel->password = Yii::$app->getSecurity()->generatePasswordHash($_POST['User']['password']);
-        if($accountModel->save(false)) {
-            return true;
+    public function saveAccount($accountModel,$value, $id=null){
+        if(empty($id)) {
+            $accountModel->status    = 'active';
+            $accountModel->ins_time  = Yii::$app->formatter->asDatetime('now');
+        } else {
+            $params = ['id' => $id, 'status' => 'active'];
+            $record = self::find()->where($params)->one();
+            if(!empty($record)) {
+                $accountModel = $record;
+            } else {
+                return false;
+            }
         }
+
+        $accountModel->user_type = $value['user_type'];
+        $accountModel->username  = strtolower(trim($value['username']));
+        $accountModel->password  = Yii::$app->getSecurity()->generatePasswordHash($_POST['Users']['password']);
+        $accountModel->up_time   = Yii::$app->formatter->asDatetime('now');
+
+        return $accountModel->save();
     }
 }

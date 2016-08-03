@@ -1,30 +1,26 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use app\assets\VotersAsset;
-VotersAsset::register($this);
+use app\assets\AccountAsset;
+use app\assets\MsgboxAsset;
+MsgboxAsset::register($this);
+AccountAsset::register($this);
 $this->title = 'Add Account';
+if(isset($id))
+    $this->title = 'Edit Account';
 ?>
 
 <h2 class="title"><?php echo $this->title; ?></h2><span class="line"></span>
-<div class="content" id="addVoterCnt" data-errorValue=<?= $error; ?>>
-<?php
-    if($error == 1) {
-        $msg = 'Error on saving data';
-    } else if ($error == 2) {
-        $msg = 'Record not saved. Voter already exists.';
-    }
-
-    if($error != 0) { ?>
-        <div class="alert alert-danger alert-dismissible" role="alert" id="createVoterAlert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <strong>Error!</strong> <?= $msg; ?>
-        </div>
-<?php } else {
-
-    } ?>
-
+<div class="content" id="create-account" data-id=<?= (isset($id)) ? $id : 0 ?>>
     <div class="custom-wrapper2 center-block">
+        <?php if(!empty($error)) { ?>
+            <div class="alert alert-danger alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <strong>Error!</strong> <?= $error; ?>
+            </div>
+        <?php } ?>
+
+
         <?php $form = ActiveForm::begin([
             'id'          => 'addVoter-form',
             'method'      => 'post',
@@ -36,13 +32,13 @@ $this->title = 'Add Account';
         ]); ?>
         <?= $form->field($model, 'user_type')->dropDownList(['encoder' => 'Encoder', 'leader' => 'Leader']
                                                             ,['prompt'=>'Select Option'],['class' => 'form-control']); ?>
-        <?= $form->field($model, 'username')->textInput(array('placeholder'=>'Username'),['class' => 'form-control']); ?>
-        <?= $form->field($model, 'password')->passwordInput(array('placeholder'=>'Password'),['class' => 'form-control']); ?>
+        <?= $form->field($model, 'username')->textInput(array('placeholder'=>'Username','class' => 'form-control toLower')); ?>
+        <?= $form->field($model, 'password')->passwordInput(array('placeholder'=>'Password', 'value' => ''),['class' => 'form-control']); ?>
 
         <div class="text-right">
             <ul class="list-inline">
                 <li><a href="/account/manage/list"  class="btn btn-danger back-btn" name="back" id="backBtn">Back</a></li>
-                <li><input type="submit" class="btn btn-primary save-btn" name="save" id="saveBtn" value="Save"></li>
+                <li><button type="button" class="btn btn-primary" id="save-button">Save</button></li>
             </ul>
         </div>
 

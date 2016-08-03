@@ -90,33 +90,50 @@ $identity = User::initUser();
                         $params = ['status' => 'active'];
                         $categories = ModuleCategory::getCategories($params);
                         $modules = Modules::getModules($params);
+                        // Admin
+                        $adminCategories = [1,2];
+                        $adminModules = [1,2,3];
+                        // Encoder
+                        $encoderCategories = [2];
+                        $encoderModules = [1];
+                        // Leader
+                        $leaderCategories = [2];
+                        $leaderModules = [2];
                         $newNavItems = array();
                         $newNavItems = $nav['items'];
                         $featuresNav = $newNavItems[1]['items'];
                         $categoryCounter=0;
 
                         foreach ($categories as $category) {
-                            $temp = '<li class="dropdown-header">' .  Yii::t('app',$category->name." Features"). '</li>'; //show category
-                            array_push($featuresNav, $temp);
 
-                            foreach ($modules as $module) {
-                                if($category->id == $module->cat_id) {
-                                    $menuItemUrl = Yii::$app->request->baseUrl . $module->url;
-                                    $menuItemUrl = (empty($menuItemUrl)) ? '/dashboard' : $menuItemUrl;
-                                    $temp = [ //add menu item if in that category
-                                        'label' => Yii::t('app',$module->name),
-                                        'url'	=> [$menuItemUrl]
-                                    ];
-                                    array_push($featuresNav, $temp);
+                            if($identity->user_type == 'admin' ||
+                              ($identity->user_type == 'encoder' && in_array($category->id, $encoderCategories)) ||
+                              ($identity->user_type == 'leader' && in_array($category->id, $leaderCategories))) {
+                                $temp = '<li class="dropdown-header">' .  Yii::t('app',$category->name." Features"). '</li>'; //show category
+                                array_push($featuresNav, $temp);
+
+                                foreach ($modules as $module) {
+                                    if(($identity->user_type == 'admin' ||
+                                      ($identity->user_type == 'encoder' && in_array($module->id, $encoderModules)) ||
+                                      ($identity->user_type == 'leader' && in_array($module->id, $leaderModules))) &&
+                                       $category->id == $module->cat_id) {
+                                        $menuItemUrl = Yii::$app->request->baseUrl . $module->url;
+                                        $menuItemUrl = (empty($menuItemUrl)) ? '/dashboard' : $menuItemUrl;
+                                        $temp = [ //add menu item if in that category
+                                            'label' => Yii::t('app',$module->name),
+                                            'url'	=> [$menuItemUrl]
+                                        ];
+                                        array_push($featuresNav, $temp);
+
+                                    }
                                 }
+                                $categoryCounter++;
                             }
 
-                            if ($categoryCounter != count($categories)-1) { //if not last , add divider
+                            if ($categoryCounter != count($categories)-1 && $categoryCounter != 0) { //if not last , add divider
                                 $temp = '<li class="divider"></li>';
                                 array_push($featuresNav, $temp);
                             }
-
-                            $categoryCounter++;
                         }
                         $newNavItems[1]['items'] =  $featuresNav;
                         $nav['items'] = $newNavItems;

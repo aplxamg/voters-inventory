@@ -76,7 +76,13 @@ class SessionController extends \yii\web\Controller
             }
             $session->close();
 
-            $this->redirect(['/dashboard']);
+            if($user['user_type'] == 'admin') {
+                $this->redirect(['/dashboard']);
+            } else if ($user['user_type'] == 'encoder') {
+                $this->redirect(['/votersmgmt/manage/list']);
+            } else {
+                $this->redirect(['/leadersmgmt/manage/list']);
+            }
         }
 
         return $this->render('login', [

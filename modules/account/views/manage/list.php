@@ -1,6 +1,8 @@
 <?php
 use app\assets\DatatableAsset;
+use app\assets\MsgboxAsset;
 DatatableAsset::register($this);
+MsgboxAsset::register($this);
 $this->title = 'Account Management List';
 ?>
 
@@ -32,10 +34,9 @@ $this->title = 'Account Management List';
                                 </button></a>
                             </li>
                             <li>
-                                <a href="/account/manage/delete/<?php echo $rec['id']; ?>">
-                                    <button type="button" class="btn btn-danger" aria-label="Trash">
-                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </button></a>
+                                <button type="button" class="btn btn-danger msgbox-button delete-account" aria-label="Trash" value="<?= $rec['id'] ?>">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                </button>
                             </li>
                         </ul>
                     </td>

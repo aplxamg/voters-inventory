@@ -23,12 +23,28 @@ class ManageController extends \yii\web\Controller
             'access' => [
                 'class' => AccessControl::className(),
                 // Pages that are included in the rule set
-                'only'  => ['index'],
+                'only'  => ['index', 'delete', 'add', 'edit', 'getlist', 'memberlist', 'leader', 'deletemember'],
                 'rules' => [
                     [ // Pages that can be accessed when logged in
                         'allow'     => true,
-                        'actions'   => ['index'],
-                        'roles'     => ['@']
+                        'actions'   => ['index', 'delete', 'add', 'edit', 'getlist', 'memberlist', 'leader', 'deletemember'],
+                        'roles'     => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            $identity = User::initUser();
+                            $adminAccess = ['index', 'delete', 'add', 'edit', 'getlist', 'memberlist', 'leader', 'deletemember'];
+                            $encoderAccess = [''];
+                            $leaderAccess = ['index', 'delete', 'add', 'edit', 'getlist', 'memberlist', 'leader', 'deletemember'];
+
+                            if($identity->user_type == 'admin' && in_array($action->id, $adminAccess)) {
+                                return true;
+                            } else if ($identity->user_type == 'encoder' && in_array($action->id, $encoderAccess)) {
+                                return true;
+                            } else if ($identity->user_type == 'leader' && in_array($action->id, $leaderAccess)) {
+                                return true;
+                            } else { // falls for encoder user type
+                                return false;
+                            }
+                        }
                     ]
                 ],
                 'denyCallback' => function ($rule, $action) {

@@ -13,7 +13,8 @@ $(document).on('click', '.msgbox-button', function(){
     var f = $(this).hasClass('member-set-vote');
     var g = $(this).hasClass('member-reset-vote');
     var h = $(this).hasClass('delete-member');
-    if(a || b || c || d || e || f || g || h) {
+    var i = $(this).hasClass('delete-account');
+    if(a || b || c || d || e || f || g || h || i) {
         if (a) {
             url = '/votersmgmt/manage/delete/' + id;
             title = 'Delete Voter';
@@ -49,6 +50,10 @@ $(document).on('click', '.msgbox-button', function(){
             url = '/leadersmgmt/manage/deletemember/' + id + '/' + leader;
             title = 'Delete Member';
             msg = 'Are you sure you want to delete member?';
+        } else if (i) {
+            url = '/account/manage/delete/' + id;
+            title = 'Delete Account';
+            msg = 'Are you sure you want to delete account?';
         }
 
         swal({

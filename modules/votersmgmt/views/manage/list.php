@@ -59,12 +59,18 @@ $this->title = 'Voters Management List';
                                 $action = 'reset';
                                 $name = 'Voted';
                             }
+
+                            $disabled = 'disabled="disabled"';
+                            if ($identity->user_type == 'admin') {
+                               $disabled = '';
+                            }
+
                         ?>
-                        <button type="button" class="btn <?= $btn ?> msgbox-button <?= $btnClass ?>" value="<?= $rec['id'] ?>"><?= $name ?></button>
+                        <button type="button" class="btn <?= $btn ?> msgbox-button <?= $btnClass ?>" value="<?= $rec['id'] ?>" <?= $disabled ?>><?= $name ?></button>
                     </td>
                     <td class="text-center">
                         <ul class="list-inline">
-                            <?php if ($user_type == 'admin') { ?>
+                            <?php if ($identity->user_type == 'admin') { ?>
                             <?php if($rec['leader'] == 0) { ?>
                             <li>
                                 <button type="button" class="btn btn-warning msgbox-button approve-leader" aria-label="View" data-toggle="tooltip"

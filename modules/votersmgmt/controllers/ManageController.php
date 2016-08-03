@@ -37,9 +37,9 @@ class ManageController extends \yii\web\Controller
 
                             if($identity->user_type == 'admin' && in_array($action->id, $adminAccess)) {
                                 return true;
-                            } else if ($identity->user == 'encoder' && in_array($action->id, $encoderAccess)) {
+                            } else if ($identity->user_type == 'encoder' && in_array($action->id, $encoderAccess)) {
                                 return true;
-                            } else if ($identity->user == 'leader' && in_array($action->id, $leaderAccess)) {
+                            } else if ($identity->user_type == 'leader' && in_array($action->id, $leaderAccess)) {
                                 return true;
                             } else { // falls for encoder user type
                                 return false;
@@ -108,7 +108,7 @@ class ManageController extends \yii\web\Controller
 
         return $this->render('list', [
             'records'       => $arr,
-            'user_type'     => $identity->user_type
+            'identity'     => $identity
         ]);
     }
 
