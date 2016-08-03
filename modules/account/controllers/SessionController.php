@@ -81,7 +81,7 @@ class SessionController extends \yii\web\Controller
             } else if ($user['user_type'] == 'encoder') {
                 $this->redirect(['/votersmgmt/manage/list']);
             } else {
-                $this->redirect(['/leadersmgmt/manage/list']);
+                $this->redirect(['/leadersmgmt/manage/edit/' . $user['id']]);
             }
         }
 

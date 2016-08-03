@@ -30,8 +30,10 @@ if(isset($id))
                 'labelOptions'  => ['class' => 'col-lg-3 control-label'],
             ]
         ]); ?>
-        <?= $form->field($model, 'user_type')->dropDownList(['encoder' => 'Encoder', 'leader' => 'Leader']
-                                                            ,['prompt'=>'Select Option'],['class' => 'form-control']); ?>
+        <?= $form->field($model, 'user_type')->dropDownList(['encoder' => 'Encoder', 'leader' => 'Leader'],[ //'prompt'=>'Select Option',
+                                                            'options' => [ 'encoder' => ['selected' => true]],
+                                                            'disabled' => 'disabled'
+        ]); ?>
         <?= $form->field($model, 'username')->textInput(array('placeholder'=>'Username','class' => 'form-control toLower')); ?>
         <?= $form->field($model, 'password')->passwordInput(array('placeholder'=>'Password', 'value' => ''),['class' => 'form-control']); ?>
 

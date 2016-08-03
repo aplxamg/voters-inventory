@@ -33,7 +33,7 @@ class ManageController extends \yii\web\Controller
                             $identity = User::initUser();
                             $adminAccess = ['index', 'delete', 'add', 'edit', 'getlist', 'memberlist', 'leader', 'deletemember'];
                             $encoderAccess = [''];
-                            $leaderAccess = ['index', 'delete', 'add', 'edit', 'getlist', 'memberlist', 'leader', 'deletemember'];
+                            $leaderAccess = ['delete', 'add', 'edit', 'getlist', 'memberlist', 'leader', 'deletemember'];
 
                             if($identity->user_type == 'admin' && in_array($action->id, $adminAccess)) {
                                 return true;

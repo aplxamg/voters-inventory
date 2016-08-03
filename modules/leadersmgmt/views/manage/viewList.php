@@ -1,13 +1,19 @@
 <?php
+    use app\components\helpers\User;
     use app\assets\DatatableAsset;
     use app\assets\MsgboxAsset;
     DatatableAsset::register($this);
     MsgboxAsset::register($this);
     $this->title = 'Members List';
+
+    $identity = User::initUser();
 ?>
 
 <h2 class="title"><?php echo $this->title; ?></h2><span class="line"></span>
 <div class="content">
+    <div class="text-center">
+        <a href="/leadersmgmt/manage/edit/<?= $identity->id ?>"><button type="button" class="btn btn-primary btn-lg">Add Members</button></a>
+    </div>
     <table id="view_members_list" class="table table-striped table-bordered dataTable display">
         <thead>
             <th class="text-center" width="20%">VIN</th>
