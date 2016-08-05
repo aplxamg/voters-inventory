@@ -232,6 +232,34 @@ class ManageController extends \yii\web\Controller
 
     }
 
+    public function actionChart()
+    {
+        // Initialize Models
+        $votersModel        = new VotersdbVoters;
+        $leadersModel       = new VotersdbLeaders;
+        $membersModel       = new VotersdbMembers;
+        $labels             = ['Y', 'N'];
+
+        $summary['labels'] = ['Voted', 'Not Voted'];
+        $summary['datasets'] = [];
+        $datasets['label']  = 'Count';
+        $datasets['borderWidth'] = 1;
+        $datasets['backgroundColor'] = [
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 99, 132, 0.2)'
+        ];
+        $datasets['borderColor'] = [
+            'rgba(54, 162, 235, 1)',
+            'rgba(255,99,132,1)'
+        ];
+        $datasets['data']    = [];
+        foreach ($labels as $label) {
+            array_push($datasets['data'], $votersModel->countByVote($label));
+        }
+        array_push($summary['datasets'], $datasets);
+        return json_encode($summary);
+    }
+
 }
 
 

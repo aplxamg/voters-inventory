@@ -131,4 +131,11 @@ class VotersdbVoters extends \yii\db\ActiveRecord
 
         return $record->save();
     }
+
+    public function countByVote($voted = 'Y')
+    {
+        $params = ['status' => 'active', 'voting_status' => $voted];
+        $record = self::find()->where($params)->all();
+        return count($record);
+    }
 }
