@@ -178,4 +178,50 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
 
         return $model->save();
     }
+
+    public function getSummaryBLeaders()
+    {
+        $query = new Query();
+        $query->select('l.id, v.first_name, v.middle_name, v.last_name, l.assigned_precinct')
+              ->from('leaders l')
+              ->innerJoin('voters v', 'v.id = l.voter_id and v.status = "active"')
+              ->where('l.status = "active"');
+        $command = $query->createCommand(Yii::$app->votersdb);
+        $rows = $command->queryAll();
+
+        if(count($rows) != 0) {
+            $model = new VotersdbMembers;
+            $records = [];
+            $leaders = [];
+            foreach($rows as $row) {
+                $temp = [];
+                if(!empty($row['middle_name'])) {
+                    $temp['name'] = ucfirst(strtolower($row['last_name'])).", ".ucwords(strtolower($row['first_name']))." ".ucfirst(strtolower($row['middle_name']));
+                } else {
+                    $temp['name'] = ucfirst(strtolower($row['last_name'])).", ".ucwords(strtolower($row['first_name']));
+                }
+                $temp['voted'] = $this->getVoterCountByMembers($row['id'], 'Y');
+                $temp['not_voted'] = $this->getVoterCountByMembers($row['id'], 'N');
+                array_push($records, $temp);
+                $leaders[$row['id']] = $temp['name'];
+            }
+            return ['records' => $records, 'leaders' => $leaders];
+        }
+
+        return $rows;
+
+    }
+
+    public function getVoterCountByMembers($leader_id, $voting_status)
+    {
+        $connection = Yii::$app->votersdb;
+        $query  = 'select m.* from members m where leader_id=:leader and m.status="active" and voter_id in';
+        $query .= '(select id from voters v where status="active" and voting_status=:voting_status)';
+        $command=$connection->createCommand($query);
+        $command->bindParam(":leader",$leader_id);
+        $command->bindParam(":voting_status",$voting_status);
+        $rows = $command->execute();
+
+        return $rows;
+    }
 }

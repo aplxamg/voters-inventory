@@ -26,9 +26,11 @@ return [
         => '/<module>/<controller>/index',
         '/<module:votersmgmt>/<controller:manage>/<action:(view|edit)>/<id:\d+>'
         => '/<module>/<controller>/<action>',
-        '/<module:votersmgmt>/<controller:manage>/<action:(add|chart)>'
+        '/<module:votersmgmt>/<controller:manage>/<action:add>'
         => '/<module>/<controller>/<action>',
         '/<module:votersmgmt>/<controller:manage>/<action:delete>/<id:\d+>'
+        => '/<module>/<controller>/<action>',
+        '/<module:votersmgmt>/<controller:manage>/<action:chart>/<id:(null|\d+)>'
         => '/<module>/<controller>/<action>',
         '/<module:votersmgmt>/<controller:manage>/<action:vote>/<operator:(set|reset)>/<id:\d+>/<user:(voter|leader)>/<leader:\d+>'
         => '/<module>/<controller>/<action>',

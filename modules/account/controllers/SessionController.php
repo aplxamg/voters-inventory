@@ -7,6 +7,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use app\models\User;
 use app\models\LoginForm;
+use app\models\VotersdbLeaders;
 
 class SessionController extends \yii\web\Controller
 {
@@ -75,14 +76,6 @@ class SessionController extends \yii\web\Controller
                 $session[$userKey] = $userValue;
             }
             $session->close();
-
-            if($user['user_type'] == 'admin') {
-                $this->redirect(['/dashboard']);
-            } else if ($user['user_type'] == 'encoder') {
-                $this->redirect(['/votersmgmt/manage/list']);
-            } else {
-                $this->redirect(['/leadersmgmt/manage/edit/' . $user['id']]);
-            }
         }
 
         return $this->render('login', [
@@ -103,7 +96,20 @@ class SessionController extends \yii\web\Controller
     public function actionDashboard()
     {
         $this->layout = '/commonLayout';
-        return $this->render('dashboard');
+        $model = new VotersdbLeaders;
+        $rows = $model->getSummaryBLeaders();
+        $leaders = ['0' => 'All'];
+        $records = [];
+
+        if(!empty($rows)) {
+            $leaders =  $leaders + $rows['leaders'];
+            $records = $rows['records'];
+        }
+
+        return $this->render('dashboard', [
+            'records' => $records,
+            'leaders' => $leaders
+        ]);
     }
 
 }

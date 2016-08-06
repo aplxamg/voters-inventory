@@ -232,7 +232,7 @@ class ManageController extends \yii\web\Controller
 
     }
 
-    public function actionChart()
+    public function actionChart($id)
     {
         // Initialize Models
         $votersModel        = new VotersdbVoters;
@@ -254,7 +254,11 @@ class ManageController extends \yii\web\Controller
         ];
         $datasets['data']    = [];
         foreach ($labels as $label) {
-            array_push($datasets['data'], $votersModel->countByVote($label));
+            if($id == 'null') {
+                array_push($datasets['data'], $votersModel->countByVote($label));
+            } else {
+                array_push($datasets['data'], $leadersModel->getVoterCountByMembers($id,$label));
+            }
         }
         array_push($summary['datasets'], $datasets);
         return json_encode($summary);
