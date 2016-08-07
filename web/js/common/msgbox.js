@@ -14,7 +14,9 @@ $(document).on('click', '.msgbox-button', function(){
     var g = $(this).hasClass('member-reset-vote');
     var h = $(this).hasClass('delete-member');
     var i = $(this).hasClass('delete-account');
-    if(a || b || c || d || e || f || g || h || i) {
+    var j = $(this).hasClass('reset-voters');
+    var k = $(this).hasClass('delete-data');
+    if(a || b || c || d || e || f || g || h || i || j || k) {
         if (a) {
             url = '/votersmgmt/manage/delete/' + id;
             title = 'Delete Voter';
@@ -54,6 +56,10 @@ $(document).on('click', '.msgbox-button', function(){
             url = '/account/manage/delete/' + id;
             title = 'Delete Account';
             msg = 'Are you sure you want to delete account?';
+        } else if (j) {
+            url = '/votersmgmt/manage/reset';
+            title = 'Delete ';
+            msg = 'Are you sure you want to reset all votes?';
         }
 
         swal({

@@ -2,8 +2,10 @@
 use app\components\helpers\User;
 use app\assets\ChartAsset;
 use app\assets\DatatableAsset;
+use app\assets\MsgboxAsset;
 ChartAsset::register($this);
 DatatableAsset::register($this);
+MsgboxAsset::register($this);
 $this->title = 'Summary';
 
 $identity = User::initUser();

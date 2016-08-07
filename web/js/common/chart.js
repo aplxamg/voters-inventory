@@ -13,14 +13,12 @@ $(document).ready(function() {
     generateChart(url);
 
     $('#selectLeader').change(function() {
-        console.log('asdasd');
         var value = $('#selectLeader').val();
         if(value == 0) {
             url = '/votersmgmt/manage/chart/null';
         } else {
             url = '/votersmgmt/manage/chart/' + value;
         }
-        console.log(url);
         generateChart(url);
     });
 

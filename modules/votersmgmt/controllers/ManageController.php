@@ -264,6 +264,16 @@ class ManageController extends \yii\web\Controller
         return json_encode($summary);
     }
 
+    public function actionReset()
+    {
+        $model = new VotersdbVoters;
+        $model->updateAll(['voting_status' => 'N'], 'voting_status = "Y"');
+        $errorCode = 0;
+        $msg = '';
+        $url = '/dashboard';
+        return json_encode(['error' => $errorCode, 'msg' => $msg, 'url' => $url]);
+    }
+
 }
 
 
