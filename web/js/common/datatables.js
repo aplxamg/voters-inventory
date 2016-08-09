@@ -16,7 +16,7 @@ $(window).load(function(){
             "aoColumnDefs": [
 	      		{ "bSortable": false, "aTargets": [ 6,7 ] },
                 { "bSearchable": false, "aTargets": [6,7] },
-                { "sWidth": "15%", "aTargets": [6,7] }
+                { "sWidth": "18%", "aTargets": [7] }
 	    	],
         });
     }

@@ -12,7 +12,7 @@
 <h2 class="title"><?php echo $this->title; ?></h2><span class="line"></span>
 <div class="content">
     <div class="text-center">
-        <a href="/leadersmgmt/manage/edit/<?= $identity->id ?>"><button type="button" class="btn btn-primary btn-lg">Add Members</button></a>
+        <a href="/leadersmgmt/manage/edit/<?= $id ?>"><button type="button" class="btn btn-primary btn-lg">Add Members</button></a>
     </div>
     <table id="view_members_list" class="table table-striped table-bordered dataTable display">
         <thead>

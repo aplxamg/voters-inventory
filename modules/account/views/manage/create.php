@@ -31,7 +31,7 @@ if(isset($id))
             ]
         ]); ?>
         <?= $form->field($model, 'user_type')->dropDownList(['encoder' => 'Encoder', 'leader' => 'Leader'],[ 'prompt'=>'Select Option',
-                                                            'options' => [ 'encoder' => ['Selected' => true]],
+                                                            'options' => [ 'encoder' => ['Selected' => true], 'leader' => ['disabled' => true]],
                                                             'readonly' => 'readonly'
         ]); ?>
         <?= $form->field($model, 'username')->textInput(array('placeholder'=>'Username','class' => 'form-control toLower')); ?>
