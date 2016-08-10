@@ -25,7 +25,7 @@ $this->title = 'Voters Management List';
         <a href="/votersmgmt/manage/add"><button type="button" class="btn btn-primary btn-lg">Add Voter</button></a>
     </div>
     <br>
-    <table id="voters_list" class="table table-striped table-bordered dataTable display myTable">
+    <table id="voters_list" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
         <thead>
             <th class="text-center">VIN</th>
             <th class="text-center">Voter's Name</th>

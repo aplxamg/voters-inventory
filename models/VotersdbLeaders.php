@@ -13,6 +13,7 @@ use app\components\helpers\Data;
  * @property integer $voter_id
  * @property string $assigned_precinct
  * @property string $status
+ * @property integer $user_id
  *
  * @property Voters $voter
  * @property Members[] $members
@@ -42,7 +43,7 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
     {
         return [
             [['voter_id'], 'required'],
-            [['voter_id'], 'integer'],
+            [['voter_id', 'user_id'], 'integer'],
             [['status'], 'string'],
             [['assigned_precinct'], 'string', 'max' => 10],
             [['voter_id'], 'exist', 'skipOnError' => true, 'targetClass' => VotersdbVoters::className(), 'targetAttribute' => ['voter_id' => 'id']],
@@ -59,6 +60,7 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
             'voter_id' => 'Voter ID',
             'assigned_precinct' => 'Assigned Precinct',
             'status' => 'Status',
+            'user_id' => 'User ID',
         ];
     }
 
@@ -67,7 +69,7 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
      */
     public function getVoter()
     {
-        return $this->hasOne(Voters::className(), ['id' => 'voter_id']);
+        return $this->hasOne(VotersdbVoters::className(), ['id' => 'voter_id']);
     }
 
     /**
@@ -75,7 +77,7 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
      */
     public function getMembers()
     {
-        return $this->hasMany(Members::className(), ['leader_id' => 'id']);
+        return $this->hasMany(VotersdbMembers::className(), ['leader_id' => 'id']);
     }
 
     public function getLeadersList(){
@@ -164,20 +166,57 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
     {
         $params = ['voter_id' => $id];
         $record  = self::find()->where($params)->one();
+        $votersModel = new VotersdbVoters;
+        $voter = $votersModel::find()->where(['id' => $id, 'status' => 'active'])->one();
+        $usersModel = new Users;
         if($record == null && $action == 'appoint') { // Add Leader
-            $model->voter_id = $id;
-            $model->assigned_precinct = '';
-            $model->status = 'active';
+            $leader = [
+                'user_type'     => 'leader',
+                'username'      => strtolower($voter->last_name).".".$this->getFirsts($voter->first_name).$this->getFirsts($voter->middle_name),
+                'password'      => $voter->id.$this->getFirsts($voter->last_name).$this->getFirsts($voter->first_name).$this->getFirsts($voter->middle_name).implode('', explode('/', $voter->birthdate))
+            ];
+            $user_id = $usersModel->saveAccount($usersModel,$leader, null);
+            if($user_id != null) {
+                $model->voter_id = $id;
+                $model->user_id = $user_id;
+                $model->assigned_precinct = '';
+                $model->status = 'active';
+            } else {
+                return false;
+            }
         } else if ($record != null && $action == 'appoint') { // Update Leader
-            $model = $record;
-            $model->status = 'active';
+            $user = $usersModel::find()->where(['id' => $record->user_id, 'status' => 'deleted'])->one();
+            if($user != null) {
+                $user->status = 'active';
+                if($user->save()) {
+                    $model = $record;
+                    $model->status = 'active';
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
         } else if ($record != null && $action == 'remove') { // Remove Leader
-            $model = $record;
-            $model->status = 'deleted';
+            $user = $usersModel::find()->where(['id' => $record->user_id, 'status' => 'active'])->one();
+            if($user != null) {
+                $user->status = 'deleted';
+                if($user->save()) {
+                    $model = $record;
+                    $model->status = 'deleted';
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+
         }
 
         return $model->save();
     }
+
+
 
     public function getSummaryBLeaders()
     {
@@ -223,5 +262,16 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
         $rows = $command->execute();
 
         return $rows;
+    }
+
+    private function getFirsts($words) {
+        $acronym = '';
+        if($words != null) {
+            $words = explode(' ', strtolower($words));
+            foreach ($words as $w) {
+              $acronym .= $w[0];
+            }
+        }
+        return $acronym;
     }
 }

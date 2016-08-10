@@ -19,10 +19,13 @@ class DatatableAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'plugin/Datatable/media/css/dataTables.bootstrap.css',
+        'plugin/Datatable/extensions/Responsive/css/responsive.bootstrap.css',
     ];
     public $js = [
         'plugin/Datatable/media/js/jquery.dataTables.min.js',
         'plugin/Datatable/media/js/dataTables.bootstrap.js',
+        'plugin/Datatable/extensions/Responsive/js/dataTables.responsive.js',
+        'plugin/Datatable/extensions/Responsive/js/responsive.bootstrap.js',
         'js/common/datatables.js'
     ];
     public $depends = [

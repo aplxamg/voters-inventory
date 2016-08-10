@@ -158,9 +158,14 @@ class Users extends ActiveRecord implements IdentityInterface
 
         $accountModel->user_type = $value['user_type'];
         $accountModel->username  = strtolower(trim($value['username']));
-        $accountModel->password  = Yii::$app->getSecurity()->generatePasswordHash($_POST['Users']['password']);
+        if(isset($value['password'])) {
+            $accountModel->password  = Yii::$app->getSecurity()->generatePasswordHash($value['password']);
+        }
         $accountModel->up_time   = Yii::$app->formatter->asDatetime('now');
 
-        return $accountModel->save();
+        if($accountModel->save()) {
+            return $accountModel->id;
+        }
+        return false;
     }
 }
