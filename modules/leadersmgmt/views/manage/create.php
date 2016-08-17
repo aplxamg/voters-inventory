@@ -13,13 +13,13 @@ $this->title = 'Add Members';
 ?>
 
 <h2 class="title"><?php echo $this->title; ?></h2><span class="line"></span>
-<?php if(isset($error) && $error == 1) { ?>
-    <div class="alert alert-danger alert-dismissible" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      <strong>Error!</strong> An error occurred while saving data.
-    </div>
-<?php } ?>
 <div id="addLeaderContainer" class="content custom-wrapper1 center-block">
+    <?php if(isset($error) && $error == 1) { ?>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <strong>Error!</strong> An error occurred while saving data.
+        </div>
+    <?php } ?>
     <?php
         $form = ActiveForm::begin([
             'id'            => 'leaderMemberSave-form',
