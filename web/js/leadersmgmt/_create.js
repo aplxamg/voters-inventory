@@ -46,7 +46,7 @@ $(document).ready(function() {
     }
 });
 
-$('#precinct').blur(function() {
+$('#addLeaderContainer #precinct').blur(function() {
      /* Precinct No Validation */
     var precinctPatt = /^\d{4}[a-zA-Z]$/;
     var precinct = $('#precinct');

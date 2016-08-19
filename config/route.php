@@ -39,7 +39,7 @@ return [
         => '/<module>/<controller>/index',
         '/<module:leadersmgmt>/<controller:manage>/<action:(delete|edit|memberlist)>/<id:\d+>'
         => '/<module>/<controller>/<action>',
-        '/<module:leadersmgmt>/<controller:manage>/<action:(add|getlist)>'
+        '/<module:leadersmgmt>/<controller:manage>/<action:(add|getlist|getlists|members)>'
         => '/<module>/<controller>/<action>',
         '/<module:leadersmgmt>/<controller:manage>/<action:leader>/<operator:(appoint|remove)>/<id:\d+>'
         => '/<module>/<controller>/<action>',

@@ -8,6 +8,7 @@ $this->title = 'Add Voter';
 
 <h2 class="title"><?php echo $this->title; ?></h2><span class="line"></span>
 <div class="content" id="addVoterCnt" data-errorValue=<?= $error; ?>>
+    <div class="custom-wrapper2 center-block">
 <?php
     if($error == 1) {
         $msg = 'Error on saving data';
@@ -20,11 +21,8 @@ $this->title = 'Add Voter';
           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <strong>Error!</strong> <?= $msg; ?>
         </div>
-<?php } else {
+<?php } ?>
 
-    } ?>
-
-    <div class="custom-wrapper2 center-block">
         <?php $form = ActiveForm::begin([
             'id'          => 'addVoter-form',
             'method'      => 'post',

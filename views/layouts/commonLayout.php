@@ -98,7 +98,7 @@ $identity = User::initUser();
                         $encoderModules = [1];
                         // Leader
                         $leaderCategories = [2];
-                        $leaderModules = [2];
+                        $leaderModules = [4];
                         $newNavItems = array();
                         $newNavItems = $nav['items'];
                         $featuresNav = $newNavItems[1]['items'];

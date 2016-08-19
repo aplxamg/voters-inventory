@@ -12,6 +12,39 @@ MsgboxAsset::register($this);
 $this->title = 'Add Members';
 ?>
 
+<!-- Select Voter Modal -->
+<div class="modal fade" id="selectVoterModal" tabindex="-1" role="dialog" aria-labelledby="selectVoterModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Select Voter</h4>
+      </div>
+      <div class="modal-body">
+        <div id="loader"></div>
+        <div id="select-voter-div">
+          <table class="table" id="select-voter-table" width="100%">
+                <thead>
+                    <th>Voter's No</th>
+                    <th>Name</th>
+                    <th>Precinct No</th>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="selected-voter-btn">Add as Member</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- End Select Voter Modal -->
+
+
 <h2 class="title"><?php echo $this->title; ?></h2><span class="line"></span>
 <div id="addLeaderContainer" class="content custom-wrapper1 center-block">
     <?php if(isset($error) && $error == 1) { ?>
@@ -61,8 +94,19 @@ $this->title = 'Add Members';
                     foreach($members as $member) {
                 ?>
                     <tr>
-                        <td><input type="text" class="form-control toUpper dtInput membersAutoComplete membersInput" data-class="<?= 'member_'.$flag; ?>" value="<?= $member['name'] ?>"></td>
-                        <td><div class="text-center"><button class="btn btn-default deleteMember-btn" id="<?= 'member_'.$flag ?>" type="button"><span class="glyphicon glyphicon-trash"></span></button></div></td>
+                        <td><input type="text" class="form-control toUpper dtInput membersInput" disabled value="<?= $member['name'] ?>"></td>
+                        <td>
+                            <div class="text-center">
+                                <ul class="list-inline">
+                                    <li>
+                                        <button class="btn btn-default addVoter-btn" id="<?= 'member_'.$flag ?>" type="button"><span class="glyphicon glyphicon-list"></span></button>
+                                    </li>
+                                    <li>
+                                        <button class="btn btn-default deleteMember-btn" id="<?= $flag ?>" type="button"><span class="glyphicon glyphicon-trash"></span></button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
                     </tr>
                 <?php
                         $toAppend .= '<input type="hidden" name="members[]" class="members member_'. $flag .'" value="'.$member['voter_id'].'">';

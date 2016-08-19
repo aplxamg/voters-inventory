@@ -106,6 +106,19 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
         return $rows;
     }
 
+    public function getLists()
+    {
+        $query = new Query();
+        $query->select('v.id, first_name, middle_name, last_name, voters_no, precinct_no')
+              ->from('_votersdb.voters as v')
+              ->leftJoin('_votersdb.leaders l', 'l.voter_id = v.id and l.status="active"')
+              ->leftJoin('_votersdb.members m', 'v.id = m.voter_id and m.status="active"')
+              ->where(['v.status' => 'active', 'l.voter_id' => NULL, 'm.voter_id' => NULL]);
+        $command = $query->createCommand(Yii::$app->votersdb);
+        $rows = $command->queryAll();
+        return $rows;
+    }
+
     public function saveMembers($id, $precinct_no, $members, $existingMembers)
     {
         $connection = Yii::$app->votersdb;

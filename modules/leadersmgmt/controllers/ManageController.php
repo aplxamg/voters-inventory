@@ -122,6 +122,7 @@ class ManageController extends \yii\web\Controller
 
     public function actionEdit($id)
     {
+        $identity       = User::initUser();
         $errorMsg = 0;
         $leadersModel = new VotersdbLeaders;
         $membersModel = new VotersdbMembers;
@@ -161,7 +162,12 @@ class ManageController extends \yii\web\Controller
             }
 
             if($leadersModel->saveMembers($id, $precinct, $members, $memberIds)) {
-                return $this->redirect('/leadersmgmt/manage/list');
+                if($identity->user_type == 'admin') {
+                    return $this->redirect('/leadersmgmt/manage/memberlist/'.$id);
+                } else {
+                    return $this->redirect('/leadersmgmt/manage/members');
+                }
+
             } else {
                 $errorMsg = 1;
             }
@@ -175,6 +181,7 @@ class ManageController extends \yii\web\Controller
         ]);
     }
 
+    /* Used for autocomplete */
     public function actionGetlist()
     {
         $keyword = $_GET['query'];
@@ -193,6 +200,32 @@ class ManageController extends \yii\web\Controller
             array_push($arr['suggestions'], $temp);
         }
         return json_encode($arr);
+    }
+
+    public function actionGetlists()
+    {
+        $leadersModel = new VotersdbLeaders;
+        $records = $leadersModel->getLists();
+
+        if(!empty($records)) {
+            $arr = [];
+            $arr['data'] = [];
+            foreach($records as $rec) {
+                $temp = [];
+                $temp['id'] = $rec['id'];
+                $temp['vin'] = $rec['voters_no'];
+                $temp['precinct'] = $rec['precinct_no'];
+                if(empty($rec['middle_name'])) {
+                    $temp['name'] = $rec['first_name']." ".$rec['last_name'];
+                } else {
+                    $temp['name'] = $rec['first_name']." ".$rec['middle_name']." ".$rec['last_name'];
+                }
+                array_push($arr['data'], $temp);
+            }
+            return json_encode($arr);
+        } else {
+            return json_encode('failed');
+        }
     }
 
     public function actionMemberlist($id)
@@ -230,6 +263,47 @@ class ManageController extends \yii\web\Controller
             'list'          => $list,
             'identity'      => $identity,
             'id'            => $id
+        ]);
+    }
+
+    public function actionMembers()
+    {
+        $identity       = User::initUser();
+        $model          = new VotersdbMembers;
+        $votersModel    = new VotersdbVoters;
+        $leadersModel   = new VotersdbLeaders;
+        $params         = ['status' => 'active', 'user_id' => $identity->id];
+        $leader         = Data::findRecords($leadersModel, null, $params);
+        $params         = ['status' => 'active', 'leader_id' => $leader->id];
+        $records        = Data::findRecords($model, null, $params, 'all');
+        $list           = [];
+
+        if(count($records)!=0) {
+            foreach($records as $value) {
+                $temp   = [];
+                $params = ['status' => 'active', 'id' => $value['voter_id']];
+                $voter  = Data::findRecords($votersModel, null, $params );
+                if(count($voter) != 0) {
+                    $temp = [];
+                    $temp['id'] = $value['id'];
+                    $temp['vin'] = $voter['voters_no'];
+                    $temp['voter_id'] = $value['voter_id'];
+                    $temp['vote']   = $voter['voting_status'];
+                    $temp['voter_id'] = $voter['id'];
+                    if(empty($voter['middle_name'])) {
+                        $temp['name'] = $voter['first_name'].' '.$voter['last_name'];
+                    } else {
+                        $temp['name'] = $voter['first_name'].' '.$voter['middle_name'].' '.$voter['last_name'];
+                    }
+                    array_push($list, $temp);
+                }
+            }
+        }
+
+        return $this->render('viewList', [
+            'list'          => $list,
+            'identity'      => $identity,
+            'id'            => $leader->id
         ]);
     }
 

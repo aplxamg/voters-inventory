@@ -1,3 +1,7 @@
 #addLeaderContainer .dtInput {
     width: 100%;
 }
+
+#selectVoterModal .modal-body {
+    min-height: 100px !important;
+}
