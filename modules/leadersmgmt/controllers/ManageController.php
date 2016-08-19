@@ -160,12 +160,28 @@ class ManageController extends \yii\web\Controller
             if(count($members) == 0) {
                 $members = [];
             }
+            $result = $leadersModel->saveMembers($id, $precinct, $members, $memberIds);
 
-            if($leadersModel->saveMembers($id, $precinct, $members, $memberIds)) {
-                if($identity->user_type == 'admin') {
-                    return $this->redirect('/leadersmgmt/manage/memberlist/'.$id);
+            if($result != false) {
+                if(gettype($result) == 'boolean') {
+                    if($identity->user_type == 'admin') {
+                        return $this->redirect('/leadersmgmt/manage/memberlist/'.$id);
+                    } else {
+                        return $this->redirect('/leadersmgmt/manage/members');
+                    }
                 } else {
-                    return $this->redirect('/leadersmgmt/manage/members');
+                    $errorMsg = [];
+                    foreach ($result as $value) {
+                        $params = ['status' => 'active', 'id' => $value];
+                        $rec = Data::findRecords($votersModel, null, $params);
+                        if(empty($record['middle_name'])) {
+                            $name = $rec['first_name']." ".$rec['last_name'];
+                        } else {
+                            $name = $rec['first_name']." ".$rec['middle_name']." ".$rec['last_name'];
+                        }
+
+                        array_push($errorMsg, $name);
+                    }
                 }
 
             } else {

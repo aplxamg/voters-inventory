@@ -123,24 +123,32 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
     {
         $connection = Yii::$app->votersdb;
         $transaction =  $connection->beginTransaction();
-
+        $leadersModel = new VotersdbLeaders;
         try {
             $record = self::findOne($id);
             $record->assigned_precinct = $precinct_no;
             if($record->save()) {
                 $addMembers = array_diff($members, $existingMembers);
                 $delMembers = array_diff($existingMembers, $members);
-
+                $tobenotified = [];
                 if(count($addMembers) != 0) {
                     foreach($addMembers as $value) {
                         $memberModel = new VotersdbMembers;
-                        $memberModel->leader_id = $id;
-                        $memberModel->voter_id = $value;
-                        $memberModel->status = 'active';
-                        if(!$memberModel->save()) {
-                            var_dump($memberModel->errors);
-                            $transaction->rollBack();
-                            return false;
+                        // Check if voter is already a member or a leader
+                        $params = ['status' => 'active', 'voter_id' => $value];
+                        $leader = Data::findRecords($leadersModel, null, $params, 'all');
+                        $member = Data::findRecords($memberModel, null, $params, 'all');
+                        if(empty($leader) && empty($member)) {
+                            $memberModel->leader_id = $id;
+                            $memberModel->voter_id = $value;
+                            $memberModel->status = 'active';
+                            if(!$memberModel->save()) {
+                                var_dump($memberModel->errors);
+                                $transaction->rollBack();
+                                return false;
+                            }
+                        } else {
+                            array_push($tobenotified, $value);
                         }
                     }
                 }
@@ -162,8 +170,11 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
                 }
 
                 $transaction->commit();
-                return true;
-
+                if(empty($tobenotified)) {
+                    return true;
+                } else {
+                    return $tobenotified;
+                }
             } else {
                 var_dump($record->errors);
                 $transaction->rollBack();

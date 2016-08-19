@@ -52,6 +52,16 @@ $this->title = 'Add Members';
           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <strong>Error!</strong> An error occurred while saving data.
         </div>
+    <?php } else if (isset($error) && gettype($error) == 'array') { ?>
+        <div class="alert alert-warning alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <strong>Warning!</strong> The following are not added as your members since it is already a leader or a member of another leader:
+            <ol>
+            <?php foreach($error as $er) { ?>
+                <li><?= $er ?></li>
+            <?php } ?>
+            </ol>
+        </div>
     <?php } ?>
     <?php
         $form = ActiveForm::begin([
