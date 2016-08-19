@@ -130,14 +130,20 @@ $identity = User::initUser();
                                 $categoryCounter++;
                             }
 
-                            if ($categoryCounter != count($categories)-1 && $categoryCounter != 0) { //if not last , add divider
+                            if($identity->user_type == 'encoder') {
+                                $totalCategories = count($encoderCategories);
+                            } else if ($identity->user_type == 'leader') {
+                                $totalCategories = count($leaderCategories);
+                            } else {
+                                $totalCategories = count($adminCategories);
+                            }
+                            if ($categoryCounter == ($totalCategories-1) && $categoryCounter != 0) { //if not last , add divider
                                 $temp = '<li class="divider"></li>';
                                 array_push($featuresNav, $temp);
                             }
                         }
                         $newNavItems[1]['items'] =  $featuresNav;
                         $nav['items'] = $newNavItems;
-
                         echo Nav::widget($nav);
                      } else {
                         echo Nav::widget([
