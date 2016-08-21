@@ -1,8 +1,10 @@
 <?php
 use app\assets\DatatableAsset;
 use app\assets\AutocompleteAsset;
+use app\assets\MsgboxAsset;
 DatatableAsset::register($this);
 AutocompleteAsset::register($this);
+MsgboxAsset::register($this);
 $this->title = 'Leaders Management List';
 ?>
 
@@ -47,10 +49,9 @@ $this->title = 'Leaders Management List';
                                 </button></a>
                             </li>
                             <li>
-                                <a href="/leadersmgmt/manage/delete/<?php echo $rec['id'] ?>">
-                                    <button type="button" class="btn btn-danger" aria-label="Trash" data-toggle="tooltip" data-placement="top" title="Delete Leader">
+                                <button type="button" class="btn btn-danger msgbox-button delete-leader" aria-label="Trash" data-toggle="tooltip" data-placement="top" title="Delete Leader" value="<?= $rec['leader_id'] ?>">
                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                    </button></a>
+                                </button>
                             </li>
                         </ul>
                     </td>

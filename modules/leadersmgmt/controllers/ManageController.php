@@ -89,26 +89,16 @@ class ManageController extends \yii\web\Controller
     public function actionDelete($id)
     {
         $leadersModel = new VotersdbLeaders;
-        $params_leader = ['voter_id' => $id, 'status' => 'active'];
-        $leaders = Data::findRecords($leadersModel, null, $params_leader);
-        if(!empty($leaders)){
-            $membersModel = new VotersdbMembers;
-            $params_member = ['leader_id' => $leaders['id'], 'status' => 'active'];
-            $members = Data::findRecords($membersModel, null, $params_member,'all');
-            foreach($members as $member){
-                if(!empty($member)){
-                    $member->status = 'deleted';
-                    if ($member->save(false)) {
-                       //
-                    }
-                }
-            }
-            $leaders->status = 'deleted';
-            if ($leaders->save(false)) {
-              Yii::$app->session->setFlash('success',"Leader Successfully Deleted");
-              $this->redirect('/leadersmgmt/manage/list');
-            }
+        $errorCode = 0;
+        $msg = '';
+        $url = '/leadersmgmt/manage/list';
+        if(!$leadersModel->deleteLeader($leadersModel, $id)) {
+            $errorCode = 1;
+            $msg = 'An error occured while deleting the data';
         }
+
+        return json_encode(['error' => $errorCode, 'msg' => $msg, 'url' => $url]);
+
     }
 
     public function actionAdd()

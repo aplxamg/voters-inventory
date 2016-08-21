@@ -113,7 +113,7 @@ $identity = User::initUser();
                                 array_push($featuresNav, $temp);
 
                                 foreach ($modules as $module) {
-                                    if(($identity->user_type == 'admin' ||
+                                    if((($identity->user_type == 'admin' &&  in_array($module->id, $adminModules)) ||
                                       ($identity->user_type == 'encoder' && in_array($module->id, $encoderModules)) ||
                                       ($identity->user_type == 'leader' && in_array($module->id, $leaderModules))) &&
                                        $category->id == $module->cat_id) {

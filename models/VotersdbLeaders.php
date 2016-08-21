@@ -288,6 +288,62 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
         return $rows;
     }
 
+    public function deleteLeader($model, $id)
+    {
+        $leader = self::find()->where(['id' => $id, 'status' => 'active'])->one();
+        $connection = Yii::$app->votersdb;
+        $transaction =  $connection->beginTransaction();
+        echo "<pre>";
+
+        try {
+            if(!empty($leader)) {
+                $user = Users::find()->where(['id' => $leader->user_id, 'status' => 'active'])->one();
+                if(!empty($user)) {
+
+                    $membersModel = new VotersdbMembers;
+                    $params = ['status' => 'active', 'leader_id' => $leader->id];
+                    $members = Data::findRecords($membersModel, null, $params, 'all');
+                    if(!empty($members)) {
+                        foreach($members as $member) {
+                            $member->status = 'deleted';
+                            if(!$member->save()) {
+                                $transaction->rollBack();
+                                return false;
+                            }
+                        }
+                    }
+
+                    $user->status = 'deleted';
+                    $user->up_time = Yii::$app->formatter->asDatetime('now');
+
+                    if($user->save()) {
+                        $leader->status = 'deleted';
+                        if($leader->save()) {
+                            $transaction->commit();
+                            return true;
+                        } else {
+                            $transaction->rollBack();
+                            return false;
+                        }
+                    } else {
+                        $transaction->rollBack();
+                        return false;
+                    }
+
+                } else {
+                    $transaction->rollBack();
+                    return false;
+                }
+            } else {
+                $transaction->rollBack();
+                return false;
+            }
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            return false;
+        }
+    }
+
     private function getFirsts($words) {
         $acronym = '';
         if($words != null) {
