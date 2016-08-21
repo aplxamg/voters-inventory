@@ -7,6 +7,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use app\components\helpers\Data;
 use app\components\helpers\User;
+use app\models\Users;
 use app\models\VotersdbVoters;
 use app\models\VotersdbLeaders;
 use app\models\VotersdbMembers;
@@ -271,6 +272,22 @@ class ManageController extends \yii\web\Controller
         $errorCode = 0;
         $msg = '';
         $url = '/dashboard';
+        return json_encode(['error' => $errorCode, 'msg' => $msg, 'url' => $url]);
+    }
+
+    public function actionDeleteall()
+    {
+        //Initialize models
+        $model = new VotersdbVoters;
+        // Defaults
+        $errorCode = 0;
+        $msg = '';
+        $url = '/dashboard';
+
+        if(!$model->deleteData()) {
+            $errorCode = 1;
+            $msg = 'An errror occured while deleting data';
+        }
         return json_encode(['error' => $errorCode, 'msg' => $msg, 'url' => $url]);
     }
 

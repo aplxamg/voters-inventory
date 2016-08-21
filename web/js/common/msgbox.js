@@ -58,8 +58,12 @@ $(document).on('click', '.msgbox-button', function(){
             msg = 'Are you sure you want to delete account?';
         } else if (j) {
             url = '/votersmgmt/manage/reset';
-            title = 'Delete ';
+            title = 'Reset Votes ';
             msg = 'Are you sure you want to reset all votes?';
+        } else if (k) {
+            url = '/votersmgmt/manage/deleteall';
+            title = 'Delete Data';
+            msg = 'Are you sure you want to delete all data?';
         }
 
         swal({

@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
+use app\components\helpers\Data;
 
 /**
  * This is the model class for table "voters".
@@ -137,5 +139,49 @@ class VotersdbVoters extends \yii\db\ActiveRecord
         $params = ['status' => 'active', 'voting_status' => $voted];
         $record = self::find()->where($params)->all();
         return count($record);
+    }
+
+
+    public function deleteData()
+    {
+        $connection = Yii::$app->votersdb;
+        $transaction =  $connection->beginTransaction();
+        try {
+            // Delete all members
+            $membersCount = count(VotersdbMembers::find()->all());
+            if(VotersdbMembers::deleteAll() == $membersCount) {
+                // Delete all users with type leader
+                $params = ['user_type' => 'leader'];
+                $usersCount = count(Users::find()->where($params)->all());
+                if(Users::deleteAll($params) == $usersCount) {
+                    // Delete all leaders
+                    $leadersCount = count(VotersdbLeaders::find()->all());
+                    if(VotersdbLeaders::deleteAll() == $leadersCount) {
+                        // Delete all voters
+                        $votersCount = count(VotersdbVoters::find()->all());
+                        if(VotersdbVoters::deleteAll() == $votersCount) {
+                            $transaction->commit();
+                            return true;
+                        } else {
+                            $transaction->rollBack();
+                            return false;
+                        }
+                    } else {
+                        $transaction->rollBack();
+                        return false;
+                    }
+                } else {
+                    $transaction->rollBack();
+                    return false;
+                }
+            } else {
+                $transaction->rollBack();
+                return false;
+            }
+
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            return false;
+        }
     }
 }
