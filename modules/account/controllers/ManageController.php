@@ -82,10 +82,40 @@ class ManageController extends \yii\web\Controller
     public function actionIndex()
     {
         $userModel = new Users;
+        $leadersModel = new VotersdbLeaders;
+        $votersModel = new VotersdbVoters;
         $params = ['status' => 'active','user_type' => ['encoder','leader']];
         $records = Data::findRecords($userModel, null, $params, 'all');
+        $arr = [];
+
+        foreach($records as $rec) {
+            $temp = [];
+            $temp['id']         = $rec['id'];
+            $temp['user_type']  = $rec['user_type'];
+            $temp['username']   = $rec['username'];
+            $temp['ins_time']   = $rec['ins_time'];
+            $temp['password']   = '';
+            if($rec['user_type'] == 'leader') {
+                $params = ['status' => 'active', 'user_id' => $rec['id']];
+                $voter_id = Data::findRecords($leadersModel, 'voter_id', $params);
+                $params = ['status' => 'active', 'id' => $voter_id];
+                $voter = Data::findRecords($votersModel, null, $params);
+                if(!empty($voter->middle_name)) {
+                    $password = $voter->id.$this->getFirsts($voter->last_name).$this->getFirsts($voter->first_name).$this->getFirsts($voter->middle_name).implode('', explode('/', $voter->birthdate));
+                } else {
+                    $password = $voter->id.$this->getFirsts($voter->last_name).$this->getFirsts($voter->first_name).implode('', explode('/', $voter->birthdate));
+                }
+
+
+                $temp['password'] = $password;
+            }
+
+            array_push($arr, $temp);
+        }
+
+
          return $this->render('list', [
-            'records'       => $records
+            'records'       => $arr
         ]);
     }
 
@@ -168,6 +198,17 @@ class ManageController extends \yii\web\Controller
         $params = ['username' => $username, 'status' => 'active'];
         $record = Data::findRecords($model, null, $params, 'all');
         return count($record);
+    }
+
+      private function getFirsts($words) {
+        $acronym = '';
+        if($words != null) {
+            $words = explode(' ', strtolower($words));
+            foreach ($words as $w) {
+              $acronym .= $w[0];
+            }
+        }
+        return $acronym;
     }
 
 

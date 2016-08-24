@@ -194,10 +194,18 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
         $voter = $votersModel::find()->where(['id' => $id, 'status' => 'active'])->one();
         $usersModel = new Users;
         if($record == null && $action == 'appoint') { // Add Leader
+            if(!empty($voter->middle_name)) {
+                $username = strtolower($voter->last_name).".".$this->getFirsts($voter->first_name).$this->getFirsts($voter->middle_name);
+                $password = $voter->id.$this->getFirsts($voter->last_name).$this->getFirsts($voter->first_name).$this->getFirsts($voter->middle_name).implode('', explode('/', $voter->birthdate));
+            } else {
+                $username = strtolower($voter->last_name).".".$this->getFirsts($voter->first_name);
+                $password = $voter->id.$this->getFirsts($voter->last_name).$this->getFirsts($voter->first_name).implode('', explode('/', $voter->birthdate));
+            }
+
             $leader = [
                 'user_type'     => 'leader',
-                'username'      => strtolower($voter->last_name).".".$this->getFirsts($voter->first_name).$this->getFirsts($voter->middle_name),
-                'password'      => $voter->id.$this->getFirsts($voter->last_name).$this->getFirsts($voter->first_name).$this->getFirsts($voter->middle_name).implode('', explode('/', $voter->birthdate))
+                'username'      => $username,
+                'password'      => $password
             ];
             $user_id = $usersModel->saveAccount($usersModel,$leader, null);
             if($user_id != null) {

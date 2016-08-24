@@ -16,7 +16,8 @@ $this->title = 'Account Management List';
         <thead>
             <th class="text-center" width="10%">User Type</th>
             <th class="text-center" width="10%">Username</th>
-            <th class="text-center" width="30%">Inserted Time</th>
+            <th class="text-center" width="10%">Password</th>
+            <th class="text-center" width="20%">Inserted Time</th>
             <th class="text-center" width="10%">Action</th>
         </thead>
         <tbody>
@@ -24,6 +25,7 @@ $this->title = 'Account Management List';
                 <tr>
                     <td class="break-word"><?= $rec['user_type'] ?></td>
                     <td class="break-word"><?= $rec['username'] ?></td>
+                    <td class="break-word"><?= $rec['password'] ?></td>
                     <td class="text-center"><?= $rec['ins_time'] ?></td>
                     <td class="text-center">
                         <ul class="list-inline">
@@ -34,7 +36,7 @@ $this->title = 'Account Management List';
                                 </button></a>
                             </li>
                             <li>
-                                <button type="button" class="btn btn-danger msgbox-button delete-account" aria-label="Trash" value="<?= $rec['id'] ?>">
+                                <button type="button" class="btn btn-danger msgbox-button delete-account" <?= ($rec['user_type'] == 'leader') ? 'disabled="disabled"' : '' ?> aria-label="Trash" value="<?= $rec['id'] ?>">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                 </button>
                             </li>

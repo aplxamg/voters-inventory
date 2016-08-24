@@ -291,6 +291,8 @@ class ManageController extends \yii\web\Controller
         return json_encode(['error' => $errorCode, 'msg' => $msg, 'url' => $url]);
     }
 
+
+
 }
 
 
