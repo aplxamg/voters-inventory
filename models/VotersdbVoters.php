@@ -150,8 +150,8 @@ class VotersdbVoters extends \yii\db\ActiveRecord
             // Delete all members
             $membersCount = count(VotersdbMembers::find()->all());
             if(VotersdbMembers::deleteAll() == $membersCount) {
-                // Delete all users with type leader
-                $params = ['user_type' => 'leader'];
+                // Delete all users with type not admin
+                $params = ['not', ['user_type' => 'admin']];
                 $usersCount = count(Users::find()->where($params)->all());
                 if(Users::deleteAll($params) == $usersCount) {
                     // Delete all leaders

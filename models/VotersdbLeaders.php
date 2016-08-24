@@ -188,64 +188,85 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
 
     public function saveLeader($model, $id, $action)
     {
-        $params = ['voter_id' => $id];
-        $record  = self::find()->where($params)->one();
-        $votersModel = new VotersdbVoters;
-        $voter = $votersModel::find()->where(['id' => $id, 'status' => 'active'])->one();
-        $usersModel = new Users;
-        if($record == null && $action == 'appoint') { // Add Leader
-            if(!empty($voter->middle_name)) {
-                $username = strtolower($voter->last_name).".".$this->getFirsts($voter->first_name).$this->getFirsts($voter->middle_name);
-                $password = $voter->id.$this->getFirsts($voter->last_name).$this->getFirsts($voter->first_name).$this->getFirsts($voter->middle_name).implode('', explode('/', $voter->birthdate));
-            } else {
-                $username = strtolower($voter->last_name).".".$this->getFirsts($voter->first_name);
-                $password = $voter->id.$this->getFirsts($voter->last_name).$this->getFirsts($voter->first_name).implode('', explode('/', $voter->birthdate));
-            }
+        $params         = ['voter_id' => $id];
+        $record         = self::find()->where($params)->one();
+        $votersModel    = new VotersdbVoters;
+        $voter          = $votersModel::find()->where(['id' => $id, 'status' => 'active'])->one();
+        $usersModel     = new Users;
+        $connection     = Yii::$app->votersdb;
+        $transaction    =  $connection->beginTransaction();
+        try {
+            if($record == null && $action == 'appoint') { // Add Leader
+                if(!empty($voter->middle_name)) {
+                    $username = strtolower($voter->last_name).".".$this->getFirsts($voter->first_name).$this->getFirsts($voter->middle_name);
+                    $password = $voter->id.$this->getFirsts($voter->last_name).$this->getFirsts($voter->first_name).$this->getFirsts($voter->middle_name).implode('', explode('/', $voter->birthdate));
+                } else {
+                    $username = strtolower($voter->last_name).".".$this->getFirsts($voter->first_name);
+                    $password = $voter->id.$this->getFirsts($voter->last_name).$this->getFirsts($voter->first_name).implode('', explode('/', $voter->birthdate));
+                }
 
-            $leader = [
-                'user_type'     => 'leader',
-                'username'      => $username,
-                'password'      => $password
-            ];
-            $user_id = $usersModel->saveAccount($usersModel,$leader, null);
-            if($user_id != null) {
-                $model->voter_id = $id;
-                $model->user_id = $user_id;
-                $model->assigned_precinct = '';
-                $model->status = 'active';
-            } else {
-                return false;
-            }
-        } else if ($record != null && $action == 'appoint') { // Update Leader
-            $user = $usersModel::find()->where(['id' => $record->user_id, 'status' => 'deleted'])->one();
-            if($user != null) {
-                $user->status = 'active';
-                if($user->save()) {
-                    $model = $record;
+                $leader = [
+                    'user_type'     => 'leader',
+                    'username'      => $username,
+                    'password'      => $password
+                ];
+                $user_id = $usersModel->saveAccount($usersModel,$leader, null);
+                if($user_id != null) {
+                    $model->voter_id = $id;
+                    $model->user_id = $user_id;
+                    $model->assigned_precinct = '';
                     $model->status = 'active';
                 } else {
+                    $transaction->rollBack();
                     return false;
                 }
-            } else {
-                return false;
-            }
-        } else if ($record != null && $action == 'remove') { // Remove Leader
-            $user = $usersModel::find()->where(['id' => $record->user_id, 'status' => 'active'])->one();
-            if($user != null) {
-                $user->status = 'deleted';
-                if($user->save()) {
-                    $model = $record;
-                    $model->status = 'deleted';
+            } else if ($record != null && $action == 'appoint') { // Update Leader
+                $user = $usersModel::find()->where(['id' => $record->user_id, 'status' => 'deleted'])->one();
+                if($user != null) {
+                    $user->status = 'active';
+                    if($user->save()) {
+                        $model = $record;
+                        $model->status = 'active';
+                    } else {
+                        $transaction->rollBack();
+                        return false;
+                    }
                 } else {
+                    $transaction->rollBack();
                     return false;
                 }
-            } else {
-                return false;
+            } else if ($record != null && $action == 'remove') { // Remove Leader
+                $user = $usersModel::find()->where(['id' => $record->user_id, 'status' => 'active'])->one();
+                if($user != null) {
+                    $user->status = 'deleted';
+                    if($user->save()) {
+                        $model = $record;
+                        $model->status = 'deleted';
+                    } else {
+                        $transaction->rollBack();
+                        return false;
+                    }
+                } else {
+                    $transaction->rollBack();
+                    return false;
+                }
+
             }
 
+            if($model->save()) {
+                $transaction->commit();
+                return true;
+            } else {
+                $transaction->rollBack();
+                return false;
+            }
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            return false;
         }
 
-        return $model->save();
+
+
     }
 
 
