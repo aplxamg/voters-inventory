@@ -68,7 +68,7 @@ $(document).on('click', '.msgbox-button', function(){
         } else if (l) {
             url = '/leadersmgmt/manage/delete/' + id;
             title = 'Delete Leader';
-            msg = 'Deleting leader means deleting members. Are you sure you want to delete leader?';
+            msg = 'Leader\'s members will also be deleted. Are you sure you want to delete leader?';
         }
 
         swal({

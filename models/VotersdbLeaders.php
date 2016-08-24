@@ -293,7 +293,6 @@ class VotersdbLeaders extends \yii\db\ActiveRecord
         $leader = self::find()->where(['id' => $id, 'status' => 'active'])->one();
         $connection = Yii::$app->votersdb;
         $transaction =  $connection->beginTransaction();
-        echo "<pre>";
 
         try {
             if(!empty($leader)) {
