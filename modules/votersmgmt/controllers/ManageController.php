@@ -161,8 +161,7 @@ class ManageController extends \yii\web\Controller
             }
             $values = Yii::$app->request->post('VotersdbVoters');
             $params = [ 'status'        => 'active',
-                        'first_name'    => strtoupper(trim($values['first_name'])),
-                        'last_name'     => strtoupper(trim($values['last_name']))
+                        'voters_no'     => $values['voters_no']
                       ];
             $record = Data::findRecords($votersModel, null, $params);
             if(count($record) == 0) {
