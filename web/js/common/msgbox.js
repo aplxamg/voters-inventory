@@ -29,7 +29,7 @@ $(document).on('click', '.msgbox-button', function(){
         } else if (c) {
             url = '/leadersmgmt/manage/leader/remove/' + id;
             title = 'Remove Leader';
-            msg = 'Are you sure you want to remove voter as leader?';
+            msg = 'Leader\'s members will also be removed. Are you sure you want to remove leader?';
         } else if (d) {
             url = '/votersmgmt/manage/vote/set/' + id + '/voter/' + leader;
             title = 'Set as voted';

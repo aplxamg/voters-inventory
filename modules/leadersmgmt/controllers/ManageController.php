@@ -328,9 +328,18 @@ class ManageController extends \yii\web\Controller
             $errorCode = 1;
             $msg = 'Voter is already a member';
         } else {
-            if(!$leadersModel->saveLeader($leadersModel, $id, $operator)) {
-              $errorCode = 1;
-              $msg = 'An error occured. Please try again later.';
+            if($operator == 'remove') {
+                $params = ['status' => 'active', 'voter_id' => $id];
+                $record = Data::findRecords($leadersModel, null, $params);
+                if(!$leadersModel->deleteLeader($leadersModel, $record->id)) {
+                    $errorCode = 1;
+                    $msg = 'An error occured. Please try again later.';
+                }
+            } else {
+                if(!$leadersModel->saveLeader($leadersModel, $id, $operator)) {
+                  $errorCode = 1;
+                  $msg = 'An error occured. Please try again later.';
+                }
             }
         }
         return json_encode(['error' => $errorCode, 'msg' => $msg, 'url' => $url]);
