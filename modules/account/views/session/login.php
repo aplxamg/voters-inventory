@@ -6,7 +6,7 @@
 
 <div id="login-wrapper">
     <div id="logo">
-        <img src='/resources/common/logo.png'>
+        <img src='/resources/common/kabus.png'>
     </div>
     <div id="content">
         <?php $form = ActiveForm::begin([
@@ -20,9 +20,7 @@
         <?= $form->field($model, 'username')->textInput(array('placeholder'=>'Username')) ?>
 
         <?= $form->field($model, 'password')->passwordInput(array('placeholder'=>'Password')) ?>
-
-        <?= Html::submitButton(Yii::t('app', 'Login'), ['class' => 'btn btn-primary pull-right', 'name' => 'login-button']) ?>
-
+        <input type="submit" class="btn btn-primary pull-right" name="login-button" value="Login">
         <?php ActiveForm::end(); ?>
     </div>
 </div>

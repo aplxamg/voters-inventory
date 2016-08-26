@@ -76,6 +76,7 @@ class SessionController extends \yii\web\Controller
                 $session[$userKey] = $userValue;
             }
             $session->close();
+            return $this->redirect('/dashboard');
         }
 
         return $this->render('login', [
