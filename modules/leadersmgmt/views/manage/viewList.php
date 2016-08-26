@@ -18,33 +18,45 @@
         <thead>
             <th class="text-center" width="20%">VIN</th>
             <th class="text-center" width="60%">Voter's Name</th>
+            <th class="text-center" width="10">Undecided Voter</th>
             <th class="text-center" width="10">Voting Status</th>
             <th class="text-center" width="10%">Action</th>
         </thead>
         <tbody>
             <?php foreach($list as $value) { ?>
+                <?php
+                    if($value['vote'] == 'N') {
+                        $btn = 'btn-danger';
+                        $btnClass = 'member-set-vote';
+                        $action = 'set';
+                        $name = 'Not Voted';
+                    } else {
+                        $btn = 'btn-success';
+                        $btnClass = 'member-reset-vote';
+                        $action = 'reset';
+                        $name = 'Voted';
+                    }
+                    $disabled = '';
+                    if($identity->user_type != 'leader') {
+                        $disabled = 'disabled="disabled"';
+                    }
+
+                    if($value['undecided'] == 'N') {
+                        $ubtnClass = 'member-set-yes';
+                        $uname = 'No';
+                    } else {
+                        $ubtnClass = 'member-set-no';
+                        $uname = 'Yes';
+                    }
+
+                ?>
                 <tr>
                     <td><?= $value['vin']; ?></td>
                     <td><?= $value['name']; ?></td>
                     <td class="text-center">
-                        <?php
-                            if($value['vote'] == 'N') {
-                                $btn = 'btn-danger';
-                                $btnClass = 'member-set-vote';
-                                $action = 'set';
-                                $name = 'Not Voted';
-                            } else {
-                                $btn = 'btn-success';
-                                $btnClass = 'member-reset-vote';
-                                $action = 'reset';
-                                $name = 'Voted';
-                            }
-                            $disabled = '';
-                            if($identity->user_type != 'leader') {
-                                $disabled = 'disabled="disabled"';
-                            }
-
-                        ?>
+                        <button type="button" class="btn btn-warning msgbox-button <?= $ubtnClass ?>" value="<?= $value['id'] ?>" <?= $disabled ?>><?= $uname ?></button>
+                    </td>
+                    <td class="text-center">
                         <button type="button" class="btn <?= $btn ?> msgbox-button <?= $btnClass ?>" value="<?= $value['voter_id'] ?>" <?= $disabled ?> data-leader="<?= $id ?>"><?= $name ?></button>
                     </td>
                     <td class="text-center">

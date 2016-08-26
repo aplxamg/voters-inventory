@@ -45,6 +45,8 @@ return [
         => '/<module>/<controller>/<action>',
         '/<module:leadersmgmt>/<controller:manage>/<action:deletemember>/<member:\d+>/<leader:\d+>'
         => '/<module>/<controller>/<action>',
+        '/<module:leadersmgmt>/<controller:manage>/<action:undecided>/<id:\d+>/<value:(yes|no)>'
+        => '/<module>/<controller>/<action>',
     ]
 ];
 ?>

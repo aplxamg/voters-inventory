@@ -255,6 +255,7 @@ class ManageController extends \yii\web\Controller
                     $temp['voter_id'] = $value['voter_id'];
                     $temp['vote']   = $voter['voting_status'];
                     $temp['voter_id'] = $voter['id'];
+                    $temp['undecided'] = $value['undecided'];
                     if(empty($voter['middle_name'])) {
                         $temp['name'] = $voter['first_name'].' '.$voter['last_name'];
                     } else {
@@ -296,6 +297,7 @@ class ManageController extends \yii\web\Controller
                     $temp['voter_id'] = $value['voter_id'];
                     $temp['vote']   = $voter['voting_status'];
                     $temp['voter_id'] = $voter['id'];
+                    $temp['undecided'] = $value['undecided'];
                     if(empty($voter['middle_name'])) {
                         $temp['name'] = $voter['first_name'].' '.$voter['last_name'];
                     } else {
@@ -364,6 +366,41 @@ class ManageController extends \yii\web\Controller
         }
 
         $url = '/leadersmgmt/manage/memberlist/' . $leader;
+        return json_encode(['error' => $errorCode, 'msg' => $msg, 'url' => $url]);
+    }
+
+    public function actionUndecided($id, $value)
+    {
+        $errorCode = 0;
+        $msg = '';
+        $url = '/leadersmgmt/manage/members';
+        $identity = User::initUser();
+
+        $leaderModel = new VotersdbLeaders;
+        $params = ['status' => 'active', 'user_id' => $identity->id];
+        $leader = Data::findRecords($leaderModel, null, $params);
+        if(!empty($leader)) {
+            $membersModel = new VotersdbMembers;
+            $params = ['id' => $id, 'status' => 'active', 'leader_id' => $leader->id];
+            $record = Data::findRecords($membersModel, null, $params);
+            if(!empty($record)) {
+                $value = ($value == 'yes') ? 'Y' : 'N';
+                $record->undecided = $value;
+                if(!$record->save()) {
+                    $errorCode = 1;
+                    $msg = 'An error occured. Please try again later';
+                }
+            } else {
+                $errorCode = 1;
+                $msg = 'Member does not exist';
+            }
+        } else {
+            $errorCode = 1;
+            $msg = 'An error occured';
+        }
+
+
+
         return json_encode(['error' => $errorCode, 'msg' => $msg, 'url' => $url]);
     }
 

@@ -17,7 +17,9 @@ $(document).on('click', '.msgbox-button', function(){
     var j = $(this).hasClass('reset-voters');
     var k = $(this).hasClass('delete-data');
     var l = $(this).hasClass('delete-leader');
-    if(a || b || c || d || e || f || g || h || i || j || k || l) {
+    var m = $(this).hasClass('member-set-yes');
+    var n = $(this).hasClass('member-set-no');
+    if(a || b || c || d || e || f || g || h || i || j || k || l || m || n) {
         if (a) {
             url = '/votersmgmt/manage/delete/' + id;
             title = 'Delete Voter';
@@ -69,6 +71,14 @@ $(document).on('click', '.msgbox-button', function(){
             url = '/leadersmgmt/manage/delete/' + id;
             title = 'Delete Leader';
             msg = 'Leader\'s members will also be deleted. Are you sure you want to delete leader?';
+        } else if (m) {
+            url = '/leadersmgmt/manage/undecided/' + id + '/yes';
+            title = 'Undecided Voter';
+            msg = 'Set undecided voter to yes?';
+        } else if (n) {
+            url = '/leadersmgmt/manage/undecided/' + id + '/no';
+            title = 'Undecided Voter';
+            msg = 'Set undecided voter to no?';
         }
 
         swal({
