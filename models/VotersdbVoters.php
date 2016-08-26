@@ -90,6 +90,10 @@ class VotersdbVoters extends \yii\db\ActiveRecord
         return $this->hasMany(Members::className(), ['voter_id' => 'id']);
     }
 
+     public function getVoter($id) {
+         return VotersdbVoters::find()-> where(['id'=>$id])->one();
+     }
+
     /*
     *   @author Anecita M. Gabisan
     *   @date   2016-06-28
@@ -113,7 +117,9 @@ class VotersdbVoters extends \yii\db\ActiveRecord
         $model->address         = strtoupper(trim($values['address']));
         $model->precinct_no     = strtoupper(trim($values['precinct_no']));
         $model->status          = 'active';
-        $model->voting_status   = 'N';
+        if($id == null) {
+            $model->voting_status   = 'N';
+        }
 
         return $model->save();
     }

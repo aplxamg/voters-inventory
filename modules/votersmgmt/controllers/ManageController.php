@@ -126,20 +126,44 @@ class ManageController extends \yii\web\Controller
          return $this->render('view', ['voter' => $voter]);
     }
 
-    public function actionEdit($id) {
-
+    public function actionEdit($id)
+    {
+        $errorMsg   = 0;
+        $updateData = 0;
         $votersModel = new VotersdbVoters;
-
-        if(Yii::$app->request->isPost) {
-
-            $values = Yii::$app->request->post('VotersdbVoters');
-            $votersModel->saveVoter($votersModel,$id,$values);
-            return $this->redirect('/votersmgmt/manage/list');
-        }
-
         $params = ['id' => $id];
         $voter = Data::findRecords($votersModel, null, $params, 'one');
-        return $this->render('edit', ['voter' => $voter]);
+        if(Yii::$app->request->isPost) {
+            $values = Yii::$app->request->post('VotersdbVoters');
+            if($voter->voters_no == $values['voters_no']) {
+                // Nothing to do
+                $updateData = 1;
+            } else {
+                $params = [ 'status'        => 'active',
+                            'voters_no'     => $values['voters_no']
+                      ];
+                $record = Data::findRecords($votersModel, null, $params);
+                if(empty($record)) {
+                    $updateData = 1;
+                } else {
+                    $errorMsg = 2;
+                }
+            }
+            if($updateData == 1) {
+                if($votersModel->saveVoter($votersModel,$id,$values)) {
+                    return $this->redirect('/votersmgmt/manage/list');
+                } else {
+                    $errorMsg = 1;
+                }
+            }
+
+        }
+
+
+        return $this->render('create', [
+            'model' => $voter,
+            'error' => $errorMsg
+        ]);
     }
     /**     @author     Anecita M Gabisan
     **      @created    2016-07-02
@@ -164,7 +188,7 @@ class ManageController extends \yii\web\Controller
                         'voters_no'     => $values['voters_no']
                       ];
             $record = Data::findRecords($votersModel, null, $params);
-            if(count($record) == 0) {
+            if(empty($record)) {
                 if($votersModel->saveVoter($votersModel, null, $values)) {
                     return $this->redirect('/votersmgmt/manage/'.$event);
                 } else {
