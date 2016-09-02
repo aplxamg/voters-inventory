@@ -6,7 +6,7 @@
 
 <div id="login-wrapper">
     <div id="logo">
-        <img src='/resources/common/kabus.png'>
+        <img src='/resources/common/kabus6.png'>
     </div>
     <div id="content">
         <?php $form = ActiveForm::begin([

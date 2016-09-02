@@ -57,16 +57,16 @@ h1.title, h2.title, h3.title, h4.title, h5.title, h6.title {
 
 /** Navigation **/
 #commonLayout {
-    height: 85px;
+    height: 100px;
     background: white;
 }
 
 #commonLayout .navbar-brand {
-    height: 85px;
+    height: 100px;
 }
 
 #commonLayout #w0 {
-    height: 85px;
+    height: 100px;
 }
 
 #commonLayout #w0 > li {
@@ -74,12 +74,12 @@ h1.title, h2.title, h3.title, h4.title, h5.title, h6.title {
 }
 
 .navbar-default .navbar-brand img {
-    width: 250px;
+    width: 200px;
 }
 
 @media (max-width: 479px) {
     .navbar-default .navbar-brand img {
-        width: 220px;
+        width: 200px;
     }
 }
 
