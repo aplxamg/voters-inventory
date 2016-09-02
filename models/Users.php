@@ -40,7 +40,7 @@ class Users extends ActiveRecord implements IdentityInterface
             [['id'], 'integer'],
             [['user_type', 'status'], 'string'],
             [['ins_time', 'up_time'], 'safe'],
-            [['username'], 'string', 'max' => 10],
+            [['username'], 'string', 'max' => 50],
             [['password', 'email_address'], 'string', 'max' => 100],
         ];
     }

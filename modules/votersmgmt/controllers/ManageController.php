@@ -24,17 +24,17 @@ class ManageController extends \yii\web\Controller
             'access' => [
                 'class' => AccessControl::className(),
                 // Pages that are included in the rule set
-                'only'  => ['index', 'view', 'edit', 'add', 'delete', 'vote'],
+                'only'  => ['index', 'view', 'edit', 'add', 'delete', 'vote', 'chart', 'reset', 'deleteall'],
                 'rules' => [
                     [ // Pages that can be accessed when logged in
                         'allow'     => true,
-                        'actions'   => ['index', 'view', 'edit', 'add', 'delete', 'vote'],
+                        'actions'   => ['index', 'view', 'edit', 'add', 'delete', 'vote', 'chart', 'reset', 'deleteall'],
                         'roles'     => ['@'],
                         'matchCallback' => function ($rule, $action) {
                             $identity = User::initUser();
-                            $adminAccess = ['index', 'view', 'edit', 'add', 'delete', 'vote']; // functions / pages accessible by the admin
-                            $encoderAccess = ['index', 'view', 'edit', 'add', 'delete']; // functions / pages accessible by the encoder
-                            $leaderAccess = ['vote'];
+                            $adminAccess = ['index', 'view', 'edit', 'add', 'delete', 'vote', 'chart', 'reset', 'deleteall']; // functions / pages accessible by the admin
+                            $encoderAccess = ['index', 'view', 'edit', 'add', 'delete', 'chart']; // functions / pages accessible by the encoder
+                            $leaderAccess = ['vote', 'chart'];
 
                             if($identity->user_type == 'admin' && in_array($action->id, $adminAccess)) {
                                 return true;

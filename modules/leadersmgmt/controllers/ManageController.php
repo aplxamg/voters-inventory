@@ -23,17 +23,17 @@ class ManageController extends \yii\web\Controller
             'access' => [
                 'class' => AccessControl::className(),
                 // Pages that are included in the rule set
-                'only'  => ['index', 'delete', 'add', 'edit', 'getlist', 'memberlist', 'leader', 'deletemember'],
+                'only'  => ['index', 'delete', 'add', 'edit', 'getlist', 'getlists','memberlist', 'members', 'leader', 'deletemember', 'undecided'],
                 'rules' => [
                     [ // Pages that can be accessed when logged in
                         'allow'     => true,
-                        'actions'   => ['index', 'delete', 'add', 'edit', 'getlist', 'memberlist', 'leader', 'deletemember'],
+                        'actions'   => ['index', 'delete', 'add', 'edit', 'getlist', 'getlists','memberlist', 'members', 'leader', 'deletemember', 'undecided'],
                         'roles'     => ['@'],
                         'matchCallback' => function ($rule, $action) {
                             $identity = User::initUser();
-                            $adminAccess = ['index', 'delete', 'add', 'edit', 'getlist', 'memberlist', 'leader', 'deletemember'];
+                            $adminAccess = ['index', 'delete', 'add', 'edit', 'getlist', 'getlists', 'memberlist', 'leader', 'deletemember', 'undecided'];
                             $encoderAccess = [''];
-                            $leaderAccess = ['delete', 'add', 'edit', 'getlist', 'memberlist', 'leader', 'deletemember'];
+                            $leaderAccess = ['getlist', 'getlists', 'members', 'deletemember', 'undecided'];
 
                             if($identity->user_type == 'admin' && in_array($action->id, $adminAccess)) {
                                 return true;
