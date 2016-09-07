@@ -16,10 +16,11 @@ $this->title = 'Add Voter';
         $msg = 'Record not saved. Voter already exists.';
     }
 
-    if($error != 0) { ?>
+    if($error != 0) {
+?>
         <div class="alert alert-danger alert-dismissible" role="alert" id="createVoterAlert">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <strong>Error!</strong> <?= $msg; ?>
+          <strong>Error!</strong> <?= $msg; ?> <?=  $error ?>
         </div>
 <?php } ?>
 
@@ -44,7 +45,9 @@ $this->title = 'Add Voter';
             <ul class="list-inline">
                 <li><a href="/votersmgmt/manage/list"  class="btn btn-danger back-btn" name="back" id="backBtn">Back</a></li>
                 <li><input type="submit" class="btn btn-primary save-btn" name="save" id="saveBtn" value="Save"></li>
+                <?php if(!isset($id)) { ?>
                 <li><input type="submit" class="btn btn-success save-btn" name="save" id="saveAnotherBtn" value="Save and Continue"></li>
+                <?php } ?>
             </ul>
         </div>
 

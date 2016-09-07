@@ -1,5 +1,6 @@
 /* Datatables and Cloning */
 var memberCount = 0;
+if($('#addLeaderContainer #members_list').length != 0) {
 var table = $('#addLeaderContainer #members_list').DataTable({
     "searching": true,
     columnDefs: [
@@ -9,7 +10,7 @@ var table = $('#addLeaderContainer #members_list').DataTable({
     "pageLength": 10,
     "lengthMenu": [[5, 10, 20], [5, 10, 20]],
 });
-
+}
 // Add new member row
 $('#addLeaderContainer #addMember-btn').click(function() {
     var action = '<div class="text-center">'

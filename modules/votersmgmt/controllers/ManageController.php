@@ -123,6 +123,10 @@ class ManageController extends \yii\web\Controller
         $votersModel = new VotersdbVoters;
         $params = ['id' => $id];
         $voter = Data::findRecords($votersModel, null, $params, 'one');
+
+        if(empty($voter)) {
+            return $this->redirect('/votersmgmt/manage/list');
+        }
          return $this->render('view', ['voter' => $voter]);
     }
 
@@ -133,6 +137,10 @@ class ManageController extends \yii\web\Controller
         $votersModel = new VotersdbVoters;
         $params = ['id' => $id];
         $voter = Data::findRecords($votersModel, null, $params, 'one');
+
+        if(empty($voter)) {
+            return $this->redirect('/votersmgmt/manage/list');
+        }
         if(Yii::$app->request->isPost) {
             $values = Yii::$app->request->post('VotersdbVoters');
             if($voter->voters_no == $values['voters_no']) {
@@ -162,7 +170,8 @@ class ManageController extends \yii\web\Controller
 
         return $this->render('create', [
             'model' => $voter,
-            'error' => $errorMsg
+            'error' => $errorMsg,
+            'id'    => $id
         ]);
     }
     /**     @author     Anecita M Gabisan
@@ -190,6 +199,7 @@ class ManageController extends \yii\web\Controller
             $record = Data::findRecords($votersModel, null, $params);
             if(empty($record)) {
                 if($votersModel->saveVoter($votersModel, null, $values)) {
+                    $errorMsg   = 0;
                     return $this->redirect('/votersmgmt/manage/'.$event);
                 } else {
                     $errorMsg = 1;
